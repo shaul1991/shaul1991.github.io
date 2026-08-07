@@ -81,3 +81,9 @@ test('상단 헤더는 페이지를 내려도 화면 위에 고정된다', () =>
 
   assert.match(header, /\.site-header \{ position: sticky; z-index: 10; top: 0;/);
 });
+
+test('운영 페이지는 CSS를 HTML에 포함해 배포 직후에도 스타일을 유지한다', () => {
+  const config = read('astro.config.mjs');
+
+  assert.match(config, /inlineStylesheets: 'always'/);
+});
