@@ -1,0 +1,38 @@
+name: Claude PR 코드 리뷰
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  review:
+    # 외부 포크 PR과 비공개 API 키가 없는 경우에는 실행하지 않습니다.
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      secrets.ANTHROPIC_API_KEY != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Claude가 변경 사항 검토
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            이 Pull Request의 변경 사항을 코드 리뷰해 주세요.
+
+            다음 기준을 우선적으로 확인합니다.
+            - 실제 오류, 회귀, 보안 문제
+            - 유지보수성과 접근성 문제
+            - 테스트 누락 또는 검증이 필요한 동작
+
+            문제가 있을 때만 한국어로 구체적인 리뷰를 남겨 주세요.
+            파일과 줄 위치를 명시하고, 문제의 영향과 개선 방향을 간결하게 설명하세요.
+            사소한 취향 차이나 칭찬만을 위한 댓글은 남기지 마세요.
+          claude_args: '--model claude-sonnet-4-6 --max-turns 10'
