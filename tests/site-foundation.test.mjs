@@ -89,7 +89,10 @@ test('운영 페이지는 CSS를 HTML에 포함해 배포 직후에도 스타일
 });
 
 test('글은 비어 있고 실제 프로젝트는 LocalMind 하나만 남는다', () => {
-  const posts = readdirSync(new URL('../src/content/posts', import.meta.url)).filter((name) => /\.mdx?$/.test(name));
+  const postsDirectory = new URL('../src/content/posts', import.meta.url);
+  const posts = existsSync(postsDirectory)
+    ? readdirSync(postsDirectory).filter((name) => /\.mdx?$/.test(name))
+    : [];
   const projects = readdirSync(new URL('../src/content/projects', import.meta.url)).filter((name) => /\.mdx?$/.test(name));
 
   assert.deepEqual(posts, []);
@@ -104,6 +107,10 @@ test('LocalMind 상세 페이지는 비개발자 설명과 접근 가능한 시�
 
   assert.match(project, /AI에게 일을 맡길 때마다/);
   assert.match(project, /쉽게 말하면/);
+  assert.match(project, /https:\/\/github\.com\/shaul1991\/localmind/);
+  assert.match(project, /한 대의 기기/);
+  assert.match(project, /서버는 필수가 아닙니다/);
+  assert.match(project, /class="deployment-modes"/);
   assert.match(project, /class="before-after"/);
   assert.match(project, /class="project-flow"/);
   assert.match(project, /<svg[^>]+role="img"/);
@@ -112,6 +119,9 @@ test('LocalMind 상세 페이지는 비개발자 설명과 접근 가능한 시�
   assert.match(project, /whoami/);
   assert.match(project, /brief/);
   assert.match(detailPage, /getCollection\('projects'\)/);
+  assert.match(detailPage, /프로젝트 소스 보기/);
+  assert.match(detailPage, /project\.data\.repository/);
+  assert.match(detailPage, /\.source-link[^}]+background: var\(--color-ink\)/);
   assert.match(detailPage, /<Content \/>/);
   assert.match(card, /href\?: string/);
 });

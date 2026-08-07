@@ -4,6 +4,7 @@ summary: AI가 매번 나를 처음 만나는 것처럼 시작하지 않도록, 
 year: '2026'
 stack: [Python, MCP, Semantic Search]
 featured: true
+repository: https://github.com/shaul1991/localmind
 ---
 
 <section id="problem" class="story-section">
@@ -63,14 +64,32 @@ featured: true
 </section>
 
 <section id="architecture" class="story-section">
-  <p class="section-label">04 · 구조</p>
-  <h2>여러 기기에서 하나의 개인 두뇌를 사용합니다.</h2>
-  <p class="section-intro">노트와 검색 기능의 기준점은 집에 있는 서버 한 곳입니다. 노트북과 AI 도구는 사설 네트워크를 통해 이 서버에 연결하므로, 기기마다 서로 다른 기억이 쌓이는 문제를 줄입니다.</p>
+  <p class="section-label">04 · 실행 방식</p>
+  <h2>한 대의 기기에서 시작하고, 필요할 때만 서버로 확장합니다.</h2>
+  <p class="section-intro"><strong>서버는 필수가 아닙니다.</strong> LocalMind와 개인 기록, AI 도구를 한 대의 컴퓨터 안에 두고 사용할 수 있습니다. 여러 기기가 같은 기억을 함께 사용해야 할 때만 홈 서버나 원격 서버 구성을 선택하면 됩니다.</p>
+
+  <div class="deployment-modes" aria-label="LocalMind의 두 가지 실행 방식">
+    <article class="deployment-mode local-mode">
+      <span class="mode-badge">기본 · 가장 단순한 구성</span>
+      <h3>한 대의 기기에서 사용</h3>
+      <p>LocalMind, AI 도구, 개인 기록이 같은 컴퓨터 안에서 작동합니다. 별도의 홈 서버나 원격 연결이 필요하지 않습니다.</p>
+      <div class="mode-flow" aria-label="한 대의 기기 내부 흐름"><span>AI 도구</span><b aria-hidden="true">→</b><span>LocalMind</span><b aria-hidden="true">→</b><span>내 기록</span></div>
+    </article>
+    <article class="deployment-mode shared-mode">
+      <span class="mode-badge">선택 · 여러 기기 공유</span>
+      <h3>홈·원격 서버로 확장</h3>
+      <p>노트북과 데스크톱 등 여러 기기에서 같은 기억에 접근하고 싶을 때 사용합니다. 서버는 편의를 위한 선택 사항입니다.</p>
+      <div class="mode-flow" aria-label="여러 기기 공유 흐름"><span>여러 기기</span><b aria-hidden="true">→</b><span>선택한 서버</span><b aria-hidden="true">→</b><span>공통 기록</span></div>
+    </article>
+  </div>
+
+  <h3 class="architecture-subtitle">선택 구성 예시: 여러 기기에서 하나의 기억 공유하기</h3>
+  <p class="section-intro">아래 그림은 LocalMind의 필수 구조가 아니라, 제가 현재 사용 중인 홈 서버 구성의 예시입니다. 노트북과 AI 도구가 사설 네트워크를 통해 선택한 서버에 연결되므로 기기마다 서로 다른 기억이 쌓이는 문제를 줄일 수 있습니다.</p>
 
   <figure class="architecture-map">
     <svg viewBox="0 0 960 470" role="img" aria-labelledby="localmind-architecture-title localmind-architecture-desc" xmlns="http://www.w3.org/2000/svg">
-      <title id="localmind-architecture-title">LocalMind 데이터 흐름</title>
-      <desc id="localmind-architecture-desc">사용자의 여러 기기와 AI 도구가 사설 네트워크를 거쳐 홈서버의 LocalMind에 연결되고, LocalMind가 개인 노트에서 관련 내용을 찾아 다시 전달하는 구조입니다.</desc>
+      <title id="localmind-architecture-title">LocalMind의 선택적 여러 기기 구성</title>
+      <desc id="localmind-architecture-desc">여러 기기에서 사용할 때 AI 도구가 사설 네트워크를 거쳐 사용자가 선택한 서버의 LocalMind에 연결되고, LocalMind가 공통 개인 기록에서 관련 내용을 찾아 전달하는 선택적 구조입니다.</desc>
       <defs>
         <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#1d2a3d" stroke-width="1"/></pattern>
         <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#67e8f9"/></marker>
@@ -84,7 +103,7 @@ featured: true
       <path d="M350 255H250" stroke="#34d399" stroke-width="2" stroke-dasharray="8 7" marker-end="url(#arrow)"/>
       <g>
         <rect x="40" y="130" width="210" height="170" rx="18" fill="#0d1e2c" stroke="#22d3ee" stroke-width="2"/>
-        <text x="70" y="172" fill="#67e8f9" font-size="15" font-weight="700">나의 기기와 AI 도구</text>
+        <text x="70" y="172" fill="#67e8f9" font-size="15" font-weight="700">여러 기기의 AI 도구</text>
         <text x="70" y="210" fill="#d8e2ef" font-size="14">MacBook · 홈 컴퓨터</text>
         <text x="70" y="238" fill="#d8e2ef" font-size="14">Hermes · Claude · Codex</text>
         <text x="70" y="274" fill="#91a2b8" font-size="12">질문하고, 맥락을 받습니다</text>
@@ -97,7 +116,7 @@ featured: true
       </g>
       <g>
         <rect x="650" y="80" width="270" height="225" rx="18" fill="#0b281f" stroke="#34d399" stroke-width="2"/>
-        <text x="682" y="124" fill="#6ee7b7" font-size="15" font-weight="700">홈서버 · LocalMind</text>
+        <text x="682" y="124" fill="#6ee7b7" font-size="15" font-weight="700">선택한 서버 · LocalMind</text>
         <text x="682" y="158" fill="#d8e2ef" font-size="14">brief · search_notes</text>
         <text x="682" y="184" fill="#d8e2ef" font-size="14">capture_note · whoami</text>
         <rect x="682" y="215" width="206" height="58" rx="10" fill="#081a15" stroke="#236c55"/>
@@ -114,7 +133,7 @@ featured: true
       <text x="574" y="278" fill="#6ee7b7" font-size="11">맥락</text>
       <text x="270" y="278" fill="#6ee7b7" font-size="11">답변</text>
     </svg>
-    <figcaption class="architecture-caption">기록은 홈서버를 하나의 기준점으로 삼고, 여러 기기는 같은 기억에 연결됩니다. 기술적인 연결 방식은 사용자가 일상적으로 의식하지 않아도 됩니다.</figcaption>
+    <figcaption class="architecture-caption">여러 기기에서 같은 기억을 공유하고 싶을 때 선택할 수 있는 확장 구성입니다. 한 대의 기기에서 사용할 때는 사설 연결 통로와 별도 서버가 필요하지 않습니다.</figcaption>
   </figure>
 </section>
 
@@ -125,7 +144,7 @@ featured: true
     <article class="value-card"><h3>반복 설명을 줄입니다</h3><p>프로젝트 배경과 이전 결정을 매 대화마다 복사해 붙이지 않아도 됩니다.</p></article>
     <article class="value-card"><h3>결정의 이유를 보존합니다</h3><p>최종 선택만 남기는 대신, 당시의 이유와 전제를 함께 기록해 미래의 판단을 돕습니다.</p></article>
     <article class="value-card"><h3>도구가 바뀌어도 기억은 남습니다</h3><p>특정 AI 대화창에 기억을 가두지 않고, MCP를 지원하는 여러 도구가 같은 개인 지식에 접근하도록 설계합니다.</p></article>
-    <article class="value-card"><h3>개인의 통제권을 우선합니다</h3><p>하나의 홈서버를 정본으로 사용하고 사설 연결을 유지해, 어디에 무엇이 저장되는지 알 수 있게 합니다.</p></article>
+    <article class="value-card"><h3>개인의 통제권을 우선합니다</h3><p>한 대의 기기 안에 기록을 둘 수도 있고, 사용자가 선택한 서버에 둘 수도 있습니다. 어디에 무엇이 저장되는지 스스로 결정합니다.</p></article>
   </div>
 </section>
 
@@ -136,7 +155,7 @@ featured: true
   <ol class="timeline">
     <li><strong>2026.06</strong><span>일상적인 AI 작업에 직접 연결해 사용하는 도그푸딩을 시작했습니다.</span></li>
     <li><strong>2026.07</strong><span>복잡했던 구성을 걷어 내고 capture_note, search_notes, whoami, brief 네 가지 핵심 기능에 집중했습니다.</span></li>
-    <li><strong>현재</strong><span>홈서버를 하나의 기준점으로 두고, 여러 기기가 원격 HTTP MCP로 같은 개인 지식에 연결되는 구조를 사용합니다.</span></li>
+    <li><strong>현재</strong><span>단일 기기에서도 완결되며, 필요하면 여러 기기가 원격 HTTP MCP로 같은 개인 지식에 연결될 수 있습니다. 저는 홈 서버 확장 구성을 사용하고 있습니다.</span></li>
     <li><strong>다음</strong><span>공개·합성 자료를 이용한 검색 회귀 테스트와 첫 유용 결과 시간 기준선을 검증할 예정입니다.</span></li>
   </ol>
   <p class="status-note"><strong>현재 공개 범위에 대한 안내:</strong> 이 페이지는 LocalMind가 해결하려는 문제와 검증된 현재 구조를 설명합니다. 검색 품질 평가의 수치 결과는 아직 기준선 검증 전이므로 성과처럼 제시하지 않습니다.</p>
