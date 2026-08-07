@@ -33,9 +33,14 @@ const sectionLinks = [
   { href: '#surfaces', label: '표면' },
   { href: '#components', label: '컴포넌트' },
 ];
+const contextGroups = [
+  { label: '안내', items: sectionLinks.slice(0, 1) },
+  { label: '토큰', items: sectionLinks.slice(1, 5) },
+  { label: '컴포넌트', items: sectionLinks.slice(5) },
+];
 ---
 <BaseLayout title="디자인 시스템 — Shaul Kim" description="사이트의 디자인 토큰과 재사용 컴포넌트를 한눈에 살펴봅니다.">
-  <Header />
+  <Header contextGroups={contextGroups} />
   <main>
     <section class="catalog-hero container">
       <p class="eyebrow">기준과 구성 요소</p>
@@ -172,9 +177,7 @@ const sectionLinks = [
   .button.secondary { border: 1px solid var(--color-line); }
   @media (max-width: 48rem) {
     .catalog-layout { grid-template-columns: 1fr; gap: 0; }
-    .catalog-nav { z-index: 2; top: 0; overflow-x: auto; padding-block: var(--space-3); background: var(--color-surface); border-bottom: 1px solid var(--color-line); }
-    .catalog-nav p { display: none; }
-    .catalog-nav nav { display: flex; width: max-content; gap: var(--space-4); }
+    .catalog-nav { display: none; }
     .principle-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 36rem) {
