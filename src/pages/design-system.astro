@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import PostPreview from '../components/PostPreview.astro';
 
 const colors = [
   { name: '배경', token: '--color-surface', value: 'var(--color-surface)' },
@@ -118,11 +117,11 @@ const contextGroups = [
           </div>
           <div class="component-block">
             <div class="component-title"><div><h3>프로젝트 카드</h3><p>프로젝트의 시각 요소, 설명, 연도, 기술을 묶습니다.</p></div><code>ProjectCard.astro</code></div>
-            <ProjectCard title="디자인 시스템 카탈로그" summary="토큰과 컴포넌트를 실제 화면에서 확인하는 내부 도구입니다." year="2026" stack={['Astro', 'SCSS', 'Design tokens']} />
+            <ProjectCard title="LocalMind" summary="AI가 이전 결정의 맥락을 이어받도록 돕는 개인 지식 시스템입니다." year="2026" stack={['Python', 'MCP', 'Semantic Search']} href="/projects/localmind" />
           </div>
-          <div class="component-block">
-            <div class="component-title"><div><h3>글 미리보기</h3><p>발행일, 제목, 요약과 태그를 일관된 리듬으로 보여줍니다.</p></div><code>PostPreview.astro</code></div>
-            <PostPreview title="디자인 기준을 기록하는 이유" description="결정을 눈에 보이는 기준으로 남기면 더 빠르고 일관되게 만들 수 있습니다." publishedAt={new Date('2026-08-07')} tags={['design', 'system']} slug="personal-operating-system" />
+          <div class="component-block empty-component">
+            <div class="component-title"><div><h3>글 미리보기</h3><p>실제 글이 공개되면 발행일, 제목, 요약과 태그를 이 자리에서 검증합니다.</p></div><code>PostPreview.astro</code></div>
+            <p>예시 콘텐츠는 사용하지 않습니다. 첫 글이 준비될 때 실제 데이터로 추가합니다.</p>
           </div>
         </section>
       </div>
@@ -170,6 +169,7 @@ const contextGroups = [
   .component-title { display: flex; gap: var(--space-6); align-items: start; justify-content: space-between; margin-bottom: var(--space-8); }
   .component-title h3 { margin: 0; font-family: var(--font-display); font-size: var(--text-lg); font-weight: 400; }
   .component-title p { margin: var(--space-1) 0 0; color: var(--color-muted); font-size: var(--text-sm); }
+  .empty-component > p { padding: var(--space-6); margin: 0; color: var(--color-muted); background: var(--color-surface-raised); border: 1px dashed var(--color-line); border-radius: var(--radius-md); }
   .button-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
   .button { display: inline-flex; min-height: 2.75rem; align-items: center; padding-inline: var(--space-6); border-radius: 99rem; font-size: var(--text-sm); font-weight: 800; text-decoration: none; }
   .button.primary { color: var(--color-surface); background: var(--color-ink); }
