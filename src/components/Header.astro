@@ -178,7 +178,7 @@ const contextGroups = Astro.props.contextGroups ?? defaultContextGroups;
 </script>
 
 <style lang="scss">
-  .site-header { border-bottom: 1px solid var(--color-line); }
+  .site-header { position: sticky; z-index: 10; top: 0; background: color-mix(in srgb, var(--color-surface) 92%, transparent); border-bottom: 1px solid var(--color-line); backdrop-filter: blur(1rem); }
   .header-inner { display: flex; min-height: 4.75rem; align-items: center; justify-content: space-between; }
   .wordmark { color: var(--color-ink); font-family: var(--font-display); font-size: 1.75rem; text-decoration: none; }
   .wordmark span { color: var(--color-accent); }
@@ -223,9 +223,10 @@ const contextGroups = Astro.props.contextGroups ?? defaultContextGroups;
       z-index: 21;
       inset-block: 0;
       display: flex;
-      width: min(22rem, 88vw);
+      width: 60vw;
+      max-width: 60vw;
       flex-direction: column;
-      padding: var(--space-6);
+      padding: 4vw;
       visibility: hidden;
       color: var(--color-ink);
       background: var(--color-surface-raised);
@@ -240,7 +241,7 @@ const contextGroups = Astro.props.contextGroups ?? defaultContextGroups;
     .sidebar-heading strong { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 400; }
     .sidebar-kicker { color: var(--color-muted); font-size: var(--text-xs); font-weight: 800; letter-spacing: .08em; }
     .sidebar-heading button { width: 2.5rem; height: 2.5rem; cursor: pointer; color: var(--color-ink); background: transparent; border: 1px solid var(--color-line); border-radius: 50%; font-size: 1.4rem; }
-    .sidebar-menu { overflow-y: auto; padding-block: var(--space-4); }
+    .sidebar-menu { padding-block: 2vh; }
     .sidebar-menu details { border-bottom: 1px solid var(--color-line); }
     .sidebar-menu summary { display: flex; min-height: 3.5rem; cursor: pointer; list-style: none; align-items: center; justify-content: space-between; font-weight: 800; }
     .sidebar-menu summary::-webkit-details-marker { display: none; }
