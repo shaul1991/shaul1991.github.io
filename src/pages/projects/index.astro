@@ -5,5 +5,5 @@ import Header from '../../components/Header.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 const projects = await getCollection('projects');
 ---
-<BaseLayout title="Projects — Shaul Kim"><Header /><main class="container section"><p class="eyebrow">Things that run</p><h1>Projects</h1><div class="project-grid">{projects.map(({ data }) => <ProjectCard {...data} />)}</div></main></BaseLayout>
+<BaseLayout title="프로젝트 — Shaul Kim"><Header /><main class="container section"><p class="eyebrow">실제로 동작하는 것들</p><h1>프로젝트</h1><div class="project-grid">{projects.map(({ data }) => <ProjectCard {...data} />)}</div></main></BaseLayout>
 <style lang="scss">h1 { margin: 0 0 var(--space-12); font-family: var(--font-display); font-size: var(--text-display); font-weight: 400; letter-spacing: -.04em; }.project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6); } @media (max-width: 44rem) { .project-grid { grid-template-columns: 1fr; } }</style>

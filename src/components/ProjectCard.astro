@@ -8,7 +8,7 @@ const { title, summary, year, stack, url } = Astro.props;
     <div class="project-meta"><span>{year}</span><span>{stack.slice(0, 2).join(' · ')}</span></div>
     <h3>{url ? <a href={url}>{title} <span>↗</span></a> : title}</h3>
     <p>{summary}</p>
-    <ul aria-label={`${title} technologies`}>{stack.map((item) => <li>{item}</li>)}</ul>
+    <ul aria-label={`${title} 사용 기술`}>{stack.map((item) => <li>{item}</li>)}</ul>
   </div>
 </article>
 <style lang="scss">

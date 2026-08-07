@@ -1,17 +1,17 @@
 ---
 const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/blog', label: 'Writing' },
-  { href: '/projects', label: 'Projects' },
+  { href: '/', label: '홈' },
+  { href: '/blog', label: '글' },
+  { href: '/projects', label: '프로젝트' },
 ];
 ---
 <header class="site-header">
   <div class="container header-inner">
-    <a class="wordmark" href="/" aria-label="Shaul Kim home">SK<span>.</span></a>
-    <nav aria-label="Primary navigation">
+    <a class="wordmark" href="/" aria-label="Shaul Kim 홈">SK<span>.</span></a>
+    <nav aria-label="주요 탐색">
       {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
     </nav>
-    <button class="theme-toggle" type="button" aria-label="Toggle color theme">◐</button>
+    <button class="theme-toggle" type="button" aria-label="색상 테마 전환">◐</button>
   </div>
 </header>
 <script>

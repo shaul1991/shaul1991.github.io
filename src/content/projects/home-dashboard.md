@@ -1,5 +1,5 @@
 ---
-title: Home Dashboard
+title: 홈 대시보드
 summary: 집의 상태와 자동화를 한 화면에서 확인하고 제어하는 개인 대시보드.
 year: '2026'
 stack: [TypeScript, Home Assistant, Web Components]
