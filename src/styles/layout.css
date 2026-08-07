@@ -1,0 +1,25 @@
+@layer layout {
+  .ds-container {
+    width: min(100% - 2rem, var(--ds-content-width));
+    margin-inline: auto;
+  }
+
+  .ds-section { padding-block: clamp(var(--ds-space-16), 10vw, var(--ds-space-24)); }
+
+  .ds-stack { display: flex; flex-direction: column; gap: var(--ds-stack-gap, var(--ds-space-6)); }
+
+  .ds-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-cluster-gap, var(--ds-space-3));
+  }
+
+  .ds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--ds-grid-gap, var(--ds-space-6));
+  }
+
+  .ds-divider { border: 0; border-top: var(--ds-border-subtle); }
+}

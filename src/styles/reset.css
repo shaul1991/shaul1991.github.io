@@ -1,0 +1,48 @@
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    background: var(--ds-color-canvas);
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    min-width: 20rem;
+    min-height: 100vh;
+    margin: 0;
+    background: var(--ds-color-canvas);
+    color: var(--ds-color-text-primary);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-md);
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+  }
+
+  img, picture, svg, video, canvas { display: block; max-width: 100%; }
+  button, input, textarea, select { font: inherit; }
+  h1, h2, h3, p, figure, blockquote, dl, dd { margin: 0; }
+  ul[role="list"], ol[role="list"] { margin: 0; padding: 0; list-style: none; }
+
+  a { color: inherit; text-decoration-thickness: 0.08em; text-underline-offset: 0.18em; }
+
+  :focus-visible {
+    outline: 2px solid var(--ds-color-focus);
+    outline-offset: 3px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  ::selection {
+    background: var(--ds-color-accent);
+    color: var(--ds-color-canvas);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

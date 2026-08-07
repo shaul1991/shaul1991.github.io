@@ -1,0 +1,39 @@
+@layer typography {
+  .ds-display {
+    max-width: 15ch;
+    font-size: var(--ds-text-display);
+    font-weight: 720;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  .ds-heading {
+    font-size: var(--ds-text-2xl);
+    font-weight: 680;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+
+  .ds-lead {
+    max-width: var(--ds-reading-width);
+    color: var(--ds-color-text-secondary);
+    font-size: var(--ds-text-lg);
+    line-height: 1.7;
+  }
+
+  .ds-body { max-width: var(--ds-reading-width); color: var(--ds-color-text-secondary); }
+
+  .ds-label {
+    color: var(--ds-color-text-muted);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-text-xs);
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .ds-meta { color: var(--ds-color-text-muted); font-size: var(--ds-text-sm); }
+}

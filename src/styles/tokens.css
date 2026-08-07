@@ -1,0 +1,52 @@
+@layer tokens {
+  :root {
+    color-scheme: dark;
+
+    --ds-color-canvas: #090a0d;
+    --ds-color-surface: #111319;
+    --ds-color-surface-raised: #171a22;
+    --ds-color-text-primary: #f4f5f7;
+    --ds-color-text-secondary: #a9afbd;
+    --ds-color-text-muted: #747c8c;
+    --ds-color-border: #292d38;
+    --ds-color-border-strong: #3a4050;
+    --ds-color-accent: #8b8dff;
+    --ds-color-accent-strong: #aeb0ff;
+    --ds-color-info: #63b3ff;
+    --ds-color-success: #4fd1a5;
+    --ds-color-danger: #ff7a90;
+    --ds-color-focus: #aeb0ff;
+
+    --ds-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --ds-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+    --ds-text-xs: 0.75rem;
+    --ds-text-sm: 0.875rem;
+    --ds-text-md: 1rem;
+    --ds-text-lg: 1.125rem;
+    --ds-text-xl: 1.375rem;
+    --ds-text-2xl: clamp(1.75rem, 3vw, 2.5rem);
+    --ds-text-display: clamp(2.5rem, 8vw, 5.5rem);
+
+    --ds-space-1: 0.25rem;
+    --ds-space-2: 0.5rem;
+    --ds-space-3: 0.75rem;
+    --ds-space-4: 1rem;
+    --ds-space-6: 1.5rem;
+    --ds-space-8: 2rem;
+    --ds-space-10: 2.5rem;
+    --ds-space-12: 3rem;
+    --ds-space-16: 4rem;
+    --ds-space-24: 6rem;
+
+    --ds-radius-sm: 0.25rem;
+    --ds-radius-md: 0.5rem;
+    --ds-radius-lg: 0.75rem;
+
+    --ds-border-subtle: 1px solid var(--ds-color-border);
+    --ds-focus-ring: 0 0 0 3px color-mix(in srgb, var(--ds-color-focus) 42%, transparent);
+    --ds-content-width: 72rem;
+    --ds-reading-width: 45rem;
+    --ds-transition-fast: 140ms ease;
+  }
+}
