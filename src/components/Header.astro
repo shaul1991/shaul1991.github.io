@@ -1,0 +1,33 @@
+---
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/blog', label: 'Writing' },
+  { href: '/projects', label: 'Projects' },
+];
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="wordmark" href="/" aria-label="Shaul Kim home">SK<span>.</span></a>
+    <nav aria-label="Primary navigation">
+      {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+    <button class="theme-toggle" type="button" aria-label="Toggle color theme">◐</button>
+  </div>
+</header>
+<script>
+  document.querySelector('.theme-toggle')?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('theme', next);
+  });
+</script>
+<style lang="scss">
+  .site-header { border-bottom: 1px solid var(--color-line); }
+  .header-inner { display: flex; min-height: 4.75rem; align-items: center; justify-content: space-between; }
+  .wordmark { color: var(--color-ink); font-family: var(--font-display); font-size: 1.75rem; text-decoration: none; }
+  .wordmark span { color: var(--color-accent); }
+  nav { display: flex; gap: clamp(.8rem, 3vw, 2rem); }
+  nav a { color: var(--color-muted); font-size: var(--text-sm); font-weight: 700; text-decoration: none; }
+  .theme-toggle { width: 2.25rem; height: 2.25rem; cursor: pointer; color: var(--color-ink); background: transparent; border: 1px solid var(--color-line); border-radius: 50%; }
+</style>
