@@ -11,18 +11,20 @@ permissions:
 
 jobs:
   review:
-    # 외부 포크 PR과 비공개 API 키가 없는 경우에는 실행하지 않습니다.
+    # 외부 포크에서 올라온 PR은 검토하지 않습니다.
     if: >-
       github.event.pull_request.draft == false &&
-      github.event.pull_request.head.repo.full_name == github.repository &&
-      secrets.ANTHROPIC_API_KEY != ''
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
     steps:
       - name: Claude가 변경 사항 검토
+        if: env.ANTHROPIC_API_KEY != ''
         uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          anthropic_api_key: ${{ env.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
             이 Pull Request의 변경 사항을 코드 리뷰해 주세요.
