@@ -1,0 +1,20 @@
+---
+import '../styles/index.scss';
+
+interface Props { title: string; description?: string; }
+const { title, description = 'Shaul Kim — 개발하고, 만들고, 꾸준히 배우는 사람.' } = Astro.props;
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <script is:inline>
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+    </script>
+  </head>
+  <body><slot /></body>
+</html>

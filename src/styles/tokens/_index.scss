@@ -1,0 +1,47 @@
+:root {
+  color-scheme: light;
+  --color-surface: #f7f5f1;
+  --color-surface-raised: #ffffff;
+  --color-ink: #181716;
+  --color-muted: #6a6863;
+  --color-line: #d9d4cb;
+  --color-accent: #ee6c4d;
+  --color-accent-strong: #c9472c;
+  --color-accent-soft: #ffe3dc;
+  --font-sans: 'Pretendard Variable', 'SUIT Variable', Inter, system-ui, sans-serif;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: clamp(1.125rem, 1.05rem + 0.35vw, 1.35rem);
+  --text-xl: clamp(1.65rem, 1.3rem + 1.5vw, 2.75rem);
+  --text-display: clamp(3rem, 2.1rem + 5.2vw, 7.25rem);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --shadow-card: 0 1rem 3rem rgb(24 23 22 / 7%);
+  --max-width: 76rem;
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --color-surface: #171716;
+  --color-surface-raised: #22211f;
+  --color-ink: #f7f3eb;
+  --color-muted: #b4b0a8;
+  --color-line: #41403c;
+  --color-accent: #ff8b70;
+  --color-accent-strong: #ffad9a;
+  --color-accent-soft: #482b26;
+  --shadow-card: 0 1rem 3rem rgb(0 0 0 / 20%);
+}

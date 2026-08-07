@@ -1,0 +1,41 @@
+name: Claude PR 코드 리뷰
+
+on:
+  # 자동 리뷰는 페이지 작업이 끝날 때까지 보류합니다.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  review:
+    # 외부 포크에서 올라온 PR은 검토하지 않습니다.
+    # Pro/Max 구독의 OAuth 토큰이 등록되지 않았다면 검토 단계를 건너뜁니다.
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+    steps:
+      - name: Claude가 변경 사항 검토
+        if: env.CLAUDE_CODE_OAUTH_TOKEN != ''
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ env.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            이 Pull Request의 변경 사항을 코드 리뷰해 주세요.
+
+            다음 기준을 우선적으로 확인합니다.
+            - 실제 오류, 회귀, 보안 문제
+            - 유지보수성과 접근성 문제
+            - 테스트 누락 또는 검증이 필요한 동작
+
+            문제가 있을 때만 한국어로 구체적인 리뷰를 남겨 주세요.
+            파일과 줄 위치를 명시하고, 문제의 영향과 개선 방향을 간결하게 설명하세요.
+            사소한 취향 차이나 칭찬만을 위한 댓글은 남기지 마세요.
+          claude_args: '--model claude-sonnet-4-6 --max-turns 10'

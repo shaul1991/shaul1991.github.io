@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import { existsSync, readFileSync } from 'node:fs';
+import test from 'node:test';
+
+const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+
+test('토큰 기반 SCSS 디자인 시스템을 제공한다', () => {
+  assert.equal(existsSync(new URL('../src/styles/tokens/_index.scss', import.meta.url)), true);
+  const tokens = read('src/styles/tokens/_index.scss');
+
+  assert.match(tokens, /--color-surface/);
+  assert.match(tokens, /--font-sans/);
+  assert.match(tokens, /--space-4/);
+  assert.match(tokens, /\[data-theme='dark'\]/);
+});
+
+test('홈 페이지는 재사용 가능한 탐색과 콘텐츠 카드로 구성된다', () => {
+  const page = read('src/pages/index.astro');
+
+  assert.match(page, /<Header/);
+  assert.match(page, /<ProjectCard/);
+  assert.match(page, /<PostPreview/);
+  assert.match(page, /recent-posts/);
+});
+
+test('프로젝트와 글 컬렉션은 Markdown 콘텐츠를 위한 타입을 제공한다', () => {
+  const config = read('src/content.config.ts');
+
+  assert.match(config, /defineCollection/);
+  assert.match(config, /projects/);
+  assert.match(config, /posts/);
+});

@@ -1,0 +1,10 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+export async function getStaticPaths() { const posts = await getCollection('posts'); return posts.map((post) => ({ params: { slug: post.id }, props: { post } })); }
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<BaseLayout title={`${post.data.title} — Shaul Kim`} description={post.data.description}><Header /><article class="container prose"><p class="eyebrow">{post.data.publishedAt.toLocaleDateString('ko-KR')} · {post.data.tags.map((tag) => `#${tag}`).join(' ')}</p><h1>{post.data.title}</h1><p class="lead">{post.data.description}</p><Content /></article></BaseLayout>
+<style lang="scss">.prose { max-width: 48rem; padding-block: var(--space-24); }.prose h1 { margin: 0; font-family: var(--font-display); font-size: clamp(2.7rem, 1.5rem + 4vw, 5rem); font-weight: 400; line-height: 1; letter-spacing: -.045em; }.lead { margin-block: var(--space-8) var(--space-12); color: var(--color-muted); font-size: var(--text-lg); }.prose :global(h2) { margin-top: var(--space-12); font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; }.prose :global(code) { padding: .1em .3em; background: var(--color-accent-soft); border-radius: .2em; }</style>
