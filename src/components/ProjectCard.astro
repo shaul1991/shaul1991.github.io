@@ -1,16 +1,30 @@
 ---
-interface Props { title: string; summary: string; year: string; stack: string[]; url?: string; }
-const { title, summary, year, stack, url } = Astro.props;
+interface Props {
+  title: string;
+  summary: string;
+  year: string;
+  stack: string[];
+  href?: string;
+  url?: string;
+}
+
+const { title, summary, year, stack, href, url } = Astro.props;
+const destination = href ?? url;
+const isExternal = Boolean(url && !href);
 ---
+
 <article class="project-card">
   <div class="project-art" aria-hidden="true"><span></span><span></span><span></span></div>
   <div class="project-content">
     <div class="project-meta"><span>{year}</span><span>{stack.slice(0, 2).join(' · ')}</span></div>
-    <h3>{url ? <a href={url}>{title} <span>↗</span></a> : title}</h3>
+    <h3>
+      {destination ? <a href={destination}>{title} <span>{isExternal ? '↗' : '→'}</span></a> : title}
+    </h3>
     <p>{summary}</p>
     <ul aria-label={`${title} 사용 기술`}>{stack.map((item) => <li>{item}</li>)}</ul>
   </div>
 </article>
+
 <style lang="scss">
   .project-card { overflow: hidden; display: grid; grid-template-columns: minmax(10rem, .8fr) 1.2fr; background: var(--color-surface-raised); border: 1px solid var(--color-line); border-radius: var(--radius-md); transition: transform .25s var(--ease-out), box-shadow .25s var(--ease-out); }
   .project-card:hover { transform: translateY(-.3rem); box-shadow: var(--shadow-card); }

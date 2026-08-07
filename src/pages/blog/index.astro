@@ -1,9 +1,20 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
-import PostPreview from '../../components/PostPreview.astro';
-const posts = (await getCollection('posts')).filter(({ data }) => !data.draft).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 ---
-<BaseLayout title="글 — Shaul Kim"><Header /><main class="container section"><p class="eyebrow">작업에서 얻은 기록</p><h1>글</h1><div class="list">{posts.map(({ data, id }) => <PostPreview {...data} slug={id} />)}</div></main></BaseLayout>
-<style lang="scss">h1 { margin: 0 0 var(--space-12); font-family: var(--font-display); font-size: var(--text-display); font-weight: 400; letter-spacing: -.04em; }.list { border-bottom: 1px solid var(--color-line); }</style>
+
+<BaseLayout title="글 — Shaul Kim" description="실제 작업에서 얻은 내용을 하나씩 기록합니다.">
+  <Header />
+  <main class="container section">
+    <p class="eyebrow">작업에서 얻은 기록</p>
+    <h1>글</h1>
+    <div class="empty-state"><strong>아직 공개한 글이 없습니다.</strong><p>예시 글 대신, 실제로 경험하고 검증한 내용을 준비하고 있습니다.</p></div>
+  </main>
+</BaseLayout>
+
+<style lang="scss">
+  h1 { margin: 0 0 var(--space-12); font-family: var(--font-display); font-size: var(--text-display); font-weight: 400; letter-spacing: -.04em; }
+  .empty-state { max-width: 42rem; padding: var(--space-8); background: var(--color-surface-raised); border: 1px dashed var(--color-line); border-radius: var(--radius-md); }
+  .empty-state strong { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 400; }
+  .empty-state p { margin: var(--space-2) 0 0; color: var(--color-muted); }
+</style>

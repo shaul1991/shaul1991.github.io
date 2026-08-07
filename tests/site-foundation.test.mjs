@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import test from 'node:test';
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
@@ -14,21 +14,21 @@ test('토큰 기반 SCSS 디자인 시스템을 제공한다', () => {
   assert.match(tokens, /\[data-theme='dark'\]/);
 });
 
-test('홈 페이지는 재사용 가능한 탐색과 콘텐츠 카드로 구성된다', () => {
+test('홈 페이지는 실제 프로젝트와 빈 글 상태를 보여준다', () => {
   const page = read('src/pages/index.astro');
 
   assert.match(page, /<Header/);
   assert.match(page, /<ProjectCard/);
-  assert.match(page, /<PostPreview/);
-  assert.match(page, /recent-posts/);
+  assert.match(page, /아직 공개한 글이 없습니다/);
+  assert.doesNotMatch(page, /<PostPreview/);
 });
 
-test('프로젝트와 글 컬렉션은 Markdown 콘텐츠를 위한 타입을 제공한다', () => {
+test('프로젝트 컬렉션은 실제 Markdown 콘텐츠를 위한 타입을 제공한다', () => {
   const config = read('src/content.config.ts');
 
   assert.match(config, /defineCollection/);
   assert.match(config, /projects/);
-  assert.match(config, /posts/);
+  assert.doesNotMatch(config, /const posts/);
 });
 
 test('주요 메뉴에서 디자인 시스템 카탈로그로 이동할 수 있다', () => {
@@ -46,7 +46,7 @@ test('디자인 시스템 카탈로그에서 토큰과 공용 컴포넌트를 �
   assert.match(catalog, /id="spacing"/);
   assert.match(catalog, /id="components"/);
   assert.match(catalog, /<ProjectCard/);
-  assert.match(catalog, /<PostPreview/);
+  assert.doesNotMatch(catalog, /<PostPreview/);
 });
 
 test('모바일 헤더는 접고 펼칠 수 있는 좌우 사이드바를 제공한다', () => {
@@ -86,4 +86,32 @@ test('운영 페이지는 CSS를 HTML에 포함해 배포 직후에도 스타일
   const config = read('astro.config.mjs');
 
   assert.match(config, /inlineStylesheets: 'always'/);
+});
+
+test('글은 비어 있고 실제 프로젝트는 LocalMind 하나만 남는다', () => {
+  const posts = readdirSync(new URL('../src/content/posts', import.meta.url)).filter((name) => /\.mdx?$/.test(name));
+  const projects = readdirSync(new URL('../src/content/projects', import.meta.url)).filter((name) => /\.mdx?$/.test(name));
+
+  assert.deepEqual(posts, []);
+  assert.deepEqual(projects, ['localmind.md']);
+  assert.equal(existsSync(new URL('../src/pages/blog/[...slug].astro', import.meta.url)), false);
+});
+
+test('LocalMind 상세 페이지는 비개발자 설명과 접근 가능한 시각화를 제공한다', () => {
+  const project = read('src/content/projects/localmind.md');
+  const detailPage = read('src/pages/projects/[...slug].astro');
+  const card = read('src/components/ProjectCard.astro');
+
+  assert.match(project, /AI에게 일을 맡길 때마다/);
+  assert.match(project, /쉽게 말하면/);
+  assert.match(project, /class="before-after"/);
+  assert.match(project, /class="project-flow"/);
+  assert.match(project, /<svg[^>]+role="img"/);
+  assert.match(project, /capture_note/);
+  assert.match(project, /search_notes/);
+  assert.match(project, /whoami/);
+  assert.match(project, /brief/);
+  assert.match(detailPage, /getCollection\('projects'\)/);
+  assert.match(detailPage, /<Content \/>/);
+  assert.match(card, /href\?: string/);
 });
