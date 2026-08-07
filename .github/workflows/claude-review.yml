@@ -1,8 +1,8 @@
 name: Claude PR 코드 리뷰
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
+  # 자동 리뷰는 페이지 작업이 끝날 때까지 보류합니다.
+  workflow_dispatch:
 
 permissions:
   contents: read
