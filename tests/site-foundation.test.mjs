@@ -48,3 +48,22 @@ test('디자인 시스템 카탈로그에서 토큰과 공용 컴포넌트를 �
   assert.match(catalog, /<ProjectCard/);
   assert.match(catalog, /<PostPreview/);
 });
+
+test('모바일 헤더는 접고 펼칠 수 있는 좌우 사이드바를 제공한다', () => {
+  const header = read('src/components/Header.astro');
+
+  assert.match(header, /data-mobile-sidebar="left"/);
+  assert.match(header, /data-mobile-sidebar="right"/);
+  assert.match(header, /aria-controls="mobile-navigation"/);
+  assert.match(header, /aria-controls="mobile-context"/);
+  assert.match(header, /<details/);
+  assert.match(header, /<summary/);
+});
+
+test('디자인 시스템은 오른쪽 모바일 사이드바에 2단 목차를 전달한다', () => {
+  const catalog = read('src/pages/design-system.astro');
+
+  assert.match(catalog, /<Header contextGroups=/);
+  assert.match(catalog, /label: '토큰'/);
+  assert.match(catalog, /label: '컴포넌트'/);
+});

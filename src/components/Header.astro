@@ -1,34 +1,261 @@
 ---
+type MenuItem = { href: string; label: string };
+type MenuGroup = { label: string; items: MenuItem[] };
+
+interface Props {
+  contextGroups?: MenuGroup[];
+}
+
 const navItems = [
   { href: '/', label: '홈' },
   { href: '/blog', label: '글' },
   { href: '/projects', label: '프로젝트' },
   { href: '/design-system', label: '디자인 시스템' },
 ];
+
+const navigationGroups: MenuGroup[] = [
+  {
+    label: '콘텐츠',
+    items: [
+      { href: '/blog', label: '글' },
+      { href: '/projects', label: '프로젝트' },
+    ],
+  },
+  {
+    label: '사이트',
+    items: [
+      { href: '/', label: '홈' },
+      { href: '/design-system', label: '디자인 시스템' },
+    ],
+  },
+];
+
+const defaultContextGroups: MenuGroup[] = [
+  {
+    label: '이 페이지',
+    items: [
+      { href: '#top', label: '맨 위로' },
+      { href: '/design-system', label: '디자인 기준 보기' },
+    ],
+  },
+];
+
+const contextGroups = Astro.props.contextGroups ?? defaultContextGroups;
 ---
-<header class="site-header">
+<header id="top" class="site-header">
   <div class="container header-inner">
+    <button
+      class="mobile-control"
+      type="button"
+      aria-label="왼쪽 탐색 사이드바 열기"
+      aria-controls="mobile-navigation"
+      aria-expanded="false"
+      data-open-sidebar="left"
+    >
+      <span aria-hidden="true">☰</span><span>메뉴</span>
+    </button>
+
     <a class="wordmark" href="/" aria-label="Shaul Kim 홈">SK<span>.</span></a>
-    <nav aria-label="주요 탐색">
+
+    <nav class="desktop-nav" aria-label="주요 탐색">
       {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
     </nav>
-    <button class="theme-toggle" type="button" aria-label="색상 테마 전환">◐</button>
+
+    <button class="theme-toggle desktop-theme" type="button" aria-label="색상 테마 전환">◐</button>
+
+    <button
+      class="mobile-control right"
+      type="button"
+      aria-label="오른쪽 페이지 사이드바 열기"
+      aria-controls="mobile-context"
+      aria-expanded="false"
+      data-open-sidebar="right"
+    >
+      <span>목차</span><span aria-hidden="true">☷</span>
+    </button>
   </div>
 </header>
+
+<div class="mobile-overlay" data-close-sidebar aria-hidden="true"></div>
+
+<aside
+  id="mobile-navigation"
+  class="mobile-sidebar left"
+  data-mobile-sidebar="left"
+  aria-label="사이트 탐색"
+  aria-hidden="true"
+>
+  <div class="sidebar-heading">
+    <div><span class="sidebar-kicker">왼쪽 사이드바</span><strong>사이트 탐색</strong></div>
+    <button type="button" aria-label="왼쪽 탐색 사이드바 닫기" data-close-sidebar>×</button>
+  </div>
+  <nav class="sidebar-menu" aria-label="모바일 주요 탐색">
+    {navigationGroups.map((group, index) => (
+      <details open={index === 0}>
+        <summary>{group.label}<span aria-hidden="true">＋</span></summary>
+        <div>{group.items.map((item) => <a href={item.href}>{item.label}<span aria-hidden="true">↗</span></a>)}</div>
+      </details>
+    ))}
+  </nav>
+  <p class="sidebar-note">두 단계 안에서 필요한 곳으로 이동합니다.</p>
+</aside>
+
+<aside
+  id="mobile-context"
+  class="mobile-sidebar right"
+  data-mobile-sidebar="right"
+  aria-label="현재 페이지 목차와 설정"
+  aria-hidden="true"
+>
+  <div class="sidebar-heading">
+    <div><span class="sidebar-kicker">오른쪽 사이드바</span><strong>이 페이지</strong></div>
+    <button type="button" aria-label="오른쪽 페이지 사이드바 닫기" data-close-sidebar>×</button>
+  </div>
+  <nav class="sidebar-menu" aria-label="모바일 페이지 목차">
+    {contextGroups.map((group, index) => (
+      <details open={index === 0}>
+        <summary>{group.label}<span aria-hidden="true">＋</span></summary>
+        <div>{group.items.map((item) => <a href={item.href}>{item.label}<span aria-hidden="true">↓</span></a>)}</div>
+      </details>
+    ))}
+  </nav>
+  <div class="sidebar-theme">
+    <span>화면 테마</span>
+    <button class="theme-toggle" type="button" aria-label="색상 테마 전환">라이트 / 다크 <span aria-hidden="true">◐</span></button>
+  </div>
+</aside>
+
 <script>
-  document.querySelector('.theme-toggle')?.addEventListener('click', () => {
-    const root = document.documentElement;
-    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    root.dataset.theme = next;
-    localStorage.setItem('theme', next);
+  const sidebarTriggers = document.querySelectorAll<HTMLButtonElement>('[data-open-sidebar]');
+  const sidebars = document.querySelectorAll<HTMLElement>('[data-mobile-sidebar]');
+  const overlay = document.querySelector<HTMLElement>('.mobile-overlay');
+  let returnFocus: HTMLElement | null = null;
+
+  const closeSidebars = () => {
+    sidebars.forEach((sidebar) => {
+      sidebar.removeAttribute('data-open');
+      sidebar.setAttribute('aria-hidden', 'true');
+    });
+    sidebarTriggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
+    overlay?.removeAttribute('data-open');
+    document.documentElement.classList.remove('drawer-open');
+    returnFocus?.focus();
+    returnFocus = null;
+  };
+
+  const openSidebar = (side: string, trigger: HTMLButtonElement) => {
+    const sidebar = document.querySelector<HTMLElement>(`[data-mobile-sidebar="${side}"]`);
+    if (!sidebar) return;
+
+    closeSidebars();
+    returnFocus = trigger;
+    sidebar.setAttribute('data-open', '');
+    sidebar.setAttribute('aria-hidden', 'false');
+    trigger.setAttribute('aria-expanded', 'true');
+    overlay?.setAttribute('data-open', '');
+    document.documentElement.classList.add('drawer-open');
+    sidebar.querySelector<HTMLButtonElement>('[data-close-sidebar]')?.focus();
+  };
+
+  sidebarTriggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => openSidebar(trigger.dataset.openSidebar ?? '', trigger));
+  });
+  document.querySelectorAll<HTMLElement>('[data-close-sidebar]').forEach((element) => element.addEventListener('click', closeSidebars));
+  sidebars.forEach((sidebar) => sidebar.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeSidebars)));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeSidebars();
+  });
+  window.matchMedia('(min-width: 48.01rem)').addEventListener('change', closeSidebars);
+
+  document.querySelectorAll<HTMLButtonElement>('.theme-toggle').forEach((button) => {
+    button.addEventListener('click', () => {
+      const root = document.documentElement;
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      localStorage.setItem('theme', next);
+    });
   });
 </script>
+
 <style lang="scss">
   .site-header { border-bottom: 1px solid var(--color-line); }
   .header-inner { display: flex; min-height: 4.75rem; align-items: center; justify-content: space-between; }
   .wordmark { color: var(--color-ink); font-family: var(--font-display); font-size: 1.75rem; text-decoration: none; }
   .wordmark span { color: var(--color-accent); }
-  nav { display: flex; gap: clamp(.8rem, 3vw, 2rem); }
-  nav a { color: var(--color-muted); font-size: var(--text-sm); font-weight: 700; text-decoration: none; }
-  .theme-toggle { width: 2.25rem; height: 2.25rem; cursor: pointer; color: var(--color-ink); background: transparent; border: 1px solid var(--color-line); border-radius: 50%; }
+  .desktop-nav { display: flex; gap: clamp(.8rem, 3vw, 2rem); }
+  .desktop-nav a { color: var(--color-muted); font-size: var(--text-sm); font-weight: 700; text-decoration: none; }
+  .theme-toggle { cursor: pointer; color: var(--color-ink); background: transparent; border: 1px solid var(--color-line); }
+  .desktop-theme { width: 2.25rem; height: 2.25rem; border-radius: 50%; }
+  .mobile-control, .mobile-sidebar, .mobile-overlay { display: none; }
+
+  @media (max-width: 48rem) {
+    :global(html.drawer-open) { overflow: hidden; }
+    .header-inner { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--space-3); min-height: 4.25rem; }
+    .desktop-nav, .desktop-theme { display: none; }
+    .wordmark { grid-column: 2; }
+    .mobile-control {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 2.5rem;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0;
+      color: var(--color-muted);
+      font-size: var(--text-xs);
+      font-weight: 800;
+      background: transparent;
+      border: 0;
+    }
+    .mobile-control.right { justify-self: end; }
+    .mobile-overlay {
+      position: fixed;
+      z-index: 20;
+      inset: 0;
+      display: block;
+      visibility: hidden;
+      background: color-mix(in srgb, var(--color-ink) 35%, transparent);
+      opacity: 0;
+      transition: opacity 180ms ease, visibility 180ms ease;
+    }
+    .mobile-overlay[data-open] { visibility: visible; opacity: 1; }
+    .mobile-sidebar {
+      position: fixed;
+      z-index: 21;
+      inset-block: 0;
+      display: flex;
+      width: min(22rem, 88vw);
+      flex-direction: column;
+      padding: var(--space-6);
+      visibility: hidden;
+      color: var(--color-ink);
+      background: var(--color-surface-raised);
+      box-shadow: var(--shadow-card);
+      transition: transform 220ms ease, visibility 220ms ease;
+    }
+    .mobile-sidebar.left { left: 0; transform: translateX(-102%); }
+    .mobile-sidebar.right { right: 0; transform: translateX(102%); }
+    .mobile-sidebar[data-open] { visibility: visible; transform: translateX(0); }
+    .sidebar-heading { display: flex; align-items: start; justify-content: space-between; padding-bottom: var(--space-8); border-bottom: 1px solid var(--color-line); }
+    .sidebar-heading > div { display: grid; gap: var(--space-1); }
+    .sidebar-heading strong { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 400; }
+    .sidebar-kicker { color: var(--color-muted); font-size: var(--text-xs); font-weight: 800; letter-spacing: .08em; }
+    .sidebar-heading button { width: 2.5rem; height: 2.5rem; cursor: pointer; color: var(--color-ink); background: transparent; border: 1px solid var(--color-line); border-radius: 50%; font-size: 1.4rem; }
+    .sidebar-menu { overflow-y: auto; padding-block: var(--space-4); }
+    .sidebar-menu details { border-bottom: 1px solid var(--color-line); }
+    .sidebar-menu summary { display: flex; min-height: 3.5rem; cursor: pointer; list-style: none; align-items: center; justify-content: space-between; font-weight: 800; }
+    .sidebar-menu summary::-webkit-details-marker { display: none; }
+    .sidebar-menu details[open] summary span { transform: rotate(45deg); }
+    .sidebar-menu summary span { transition: transform 160ms ease; }
+    .sidebar-menu details > div { display: grid; padding: 0 0 var(--space-3) var(--space-3); }
+    .sidebar-menu a { display: flex; min-height: 2.75rem; align-items: center; justify-content: space-between; color: var(--color-muted); font-size: var(--text-sm); font-weight: 700; text-decoration: none; }
+    .sidebar-menu a:hover { color: var(--color-accent-strong); }
+    .sidebar-note { margin: auto 0 0; padding-top: var(--space-6); color: var(--color-muted); font-size: var(--text-xs); }
+    .sidebar-theme { display: grid; gap: var(--space-3); margin-top: auto; padding-top: var(--space-6); border-top: 1px solid var(--color-line); }
+    .sidebar-theme > span { color: var(--color-muted); font-size: var(--text-xs); font-weight: 800; }
+    .sidebar-theme .theme-toggle { display: flex; min-height: 3rem; align-items: center; justify-content: space-between; padding-inline: var(--space-4); border-radius: var(--radius-sm); font-size: var(--text-sm); font-weight: 800; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-sidebar, .mobile-overlay { transition: none; }
+  }
 </style>
