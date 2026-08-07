@@ -30,3 +30,21 @@ test('프로젝트와 글 컬렉션은 Markdown 콘텐츠를 위한 타입을 �
   assert.match(config, /projects/);
   assert.match(config, /posts/);
 });
+
+test('주요 메뉴에서 디자인 시스템 카탈로그로 이동할 수 있다', () => {
+  const header = read('src/components/Header.astro');
+
+  assert.match(header, /href: '\/design-system'/);
+  assert.match(header, /label: '디자인 시스템'/);
+});
+
+test('디자인 시스템 카탈로그에서 토큰과 공용 컴포넌트를 살펴볼 수 있다', () => {
+  const catalog = read('src/pages/design-system.astro');
+
+  assert.match(catalog, /id="colors"/);
+  assert.match(catalog, /id="typography"/);
+  assert.match(catalog, /id="spacing"/);
+  assert.match(catalog, /id="components"/);
+  assert.match(catalog, /<ProjectCard/);
+  assert.match(catalog, /<PostPreview/);
+});
