@@ -67,3 +67,11 @@ test('디자인 시스템은 오른쪽 모바일 사이드바에 2단 목차를 
   assert.match(catalog, /label: '토큰'/);
   assert.match(catalog, /label: '컴포넌트'/);
 });
+
+test('모바일 사이드바는 화면의 60%만 사용하고 내부 스크롤을 만들지 않는다', () => {
+  const header = read('src/components/Header.astro');
+
+  assert.match(header, /width: 60vw/);
+  assert.doesNotMatch(header, /width: min\(22rem, 88vw\)/);
+  assert.doesNotMatch(header, /overflow-y: auto/);
+});
