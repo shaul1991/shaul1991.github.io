@@ -75,3 +75,9 @@ test('모바일 사이드바는 화면의 60%만 사용하고 내부 스크롤�
   assert.doesNotMatch(header, /width: min\(22rem, 88vw\)/);
   assert.doesNotMatch(header, /overflow-y: auto/);
 });
+
+test('상단 헤더는 페이지를 내려도 화면 위에 고정된다', () => {
+  const header = read('src/components/Header.astro');
+
+  assert.match(header, /\.site-header \{ position: sticky; z-index: 10; top: 0;/);
+});
