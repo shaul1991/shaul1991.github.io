@@ -2,15 +2,16 @@
 title: 'sdd-5docs 3: tasks·review로 실행과 완료를 닫는다'
 description: 실행 계약과 수락 조건별 증거를 연결해 AI의 완료 선언을 검증 가능하게 만든다.
 publishedAt: 2026-08-08
+updatedAt: 2026-08-09
 tags: [작업 흐름, SDD, 검증]
 featured: false
 series: sdd-5docs
 seriesOrder: 3
 editor: 한결
-editorReview: 2026-08-08-series-consolidation
+editorReview: 2026-08-09-localmind-revalidation
 ---
 
-`tasks.md`는 실행 범위와 절차를 확정하고, `review.md`는 그 결과의 완료 여부를 증거로 판정한다.
+`tasks.md`는 AI에게 맡길 실행 계약을 확정한다. AI는 계약에 따라 구현한 뒤 goal·spec·plan과 수락 조건을 독립 self-review하고, `review.md`에 충족 증거와 남은 위험을 기록한다.
 
 ## 핵심
 
@@ -29,7 +30,7 @@ editorReview: 2026-08-08-series-consolidation
 
 ## review.md
 
-핵심은 **완료 선언을 증거와 연결하는 것**이다. 구현 요약보다 수락 조건마다 어떤 테스트와 화면 확인을 통과했는지 먼저 기록한다.
+핵심은 **독립 self-review 결과를 완료 선언과 연결하는 것**이다. 구현 요약보다 goal·spec·plan과 수락 조건마다 어떤 테스트와 화면 확인을 통과했는지 먼저 기록한다.
 
 | 기록 | 필요한 이유 |
 | --- | --- |

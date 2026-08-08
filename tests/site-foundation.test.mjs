@@ -291,6 +291,9 @@ test('첫 글은 LocalMind 기록에 근거한 작업 흐름과 의사결정 방
   assert.match(post, /작업 크기에 맞게/);
   assert.match(post, /트레이드오프/);
   assert.match(post, /self-review/);
+  assert.match(firstPost, /goal\.md[\s\S]+spec\.md[\s\S]+plan\.md/);
+  assert.match(firstPost, /tasks\.md[\s\S]+self-review/);
+  assert.match(firstPost, /방향이 정해진 뒤/);
   assert.match(post, /사람이 최종 결정/);
   assert.match(post, /LocalMind/);
   assert.match(firstPost, /요청이 모호한 채로 시작하면/);
@@ -340,6 +343,8 @@ test('sdd-5docs는 개요·설계·실행 세 편으로 설명한다', () => {
 
   assert.match(posts[0], /나는 실제로/);
   assert.match(posts[0], /문서를 나누면/);
+  assert.match(posts[0], /실제 실행에서는[\s\S]+구현과 독립 self-review[\s\S]+review\.md/);
+  assert.match(posts[0], /조사·벤치마킹[\s\S]+intake/);
   assert.match(posts[0], /<ol class="process-flow"/);
   assert.match(posts[0], /aria-hidden="true">🎯/);
   assert.match(posts[1], /goal\.md/);
@@ -347,6 +352,8 @@ test('sdd-5docs는 개요·설계·실행 세 편으로 설명한다', () => {
   assert.match(posts[1], /plan\.md/);
   assert.match(posts[1], /해석 차이/);
   assert.match(posts[2], /tasks\.md/);
+  assert.match(posts[2], /AI에게 맡길 실행 계약/);
+  assert.match(posts[2], /독립 self-review 결과/);
   assert.match(posts[2], /review\.md/);
   assert.match(posts[2], /완료 선언/);
   assert.match(posts.join('\n'), /작업 크기에 비례/);
