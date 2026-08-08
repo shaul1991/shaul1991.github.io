@@ -10,6 +10,8 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+const projectFacts = project.data.facts ?? ['직접 사용하며 개선 중', '단일 기기 · 선택적 서버', '2026년 시작'];
+const projectInitials = project.data.initials ?? project.data.title.slice(0, 2).toUpperCase();
 const sectionLinks = [
   { href: '#problem', label: '시작한 이유' },
   { href: '#change', label: '무엇이 달라지나' },
@@ -34,9 +36,7 @@ const contextGroups = [
         <h1>{project.data.title}</h1>
         <p class="summary">{project.data.summary}</p>
         <div class="project-facts" aria-label="프로젝트 정보">
-          <span>직접 사용하며 개선 중</span>
-          <span>단일 기기 · 선택적 서버</span>
-          <span>2026년 시작</span>
+          {projectFacts.map((fact) => <span>{fact}</span>)}
         </div>
         {project.data.repository && (
           <a class="source-link" href={project.data.repository} rel="external" aria-label={`${project.data.title} GitHub 저장소 열기`}>
@@ -47,7 +47,7 @@ const contextGroups = [
       <div class="hero-visual" aria-hidden="true">
         <span class="orbit orbit-one"></span>
         <span class="orbit orbit-two"></span>
-        <span class="node node-center">LM</span>
+        <span class="node node-center">{projectInitials}</span>
         <span class="node node-one"></span>
         <span class="node node-two"></span>
         <span class="node node-three"></span>

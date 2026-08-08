@@ -91,9 +91,9 @@ test('운영 페이지는 CSS를 HTML에 포함해 배포 직후에도 스타일
   assert.match(config, /inlineStylesheets: 'always'/);
 });
 
-test('실제 글과 LocalMind 프로젝트만 콘텐츠 컬렉션에 남는다', () => {
+test('실제 글과 실제 프로젝트만 콘텐츠 컬렉션에 남는다', () => {
   const posts = readdirSync(new URL('../src/content/posts', import.meta.url)).filter((name) => /\.mdx?$/.test(name)).sort();
-  const projects = readdirSync(new URL('../src/content/projects', import.meta.url)).filter((name) => /\.mdx?$/.test(name));
+  const projects = readdirSync(new URL('../src/content/projects', import.meta.url)).filter((name) => /\.mdx?$/.test(name)).sort();
 
   assert.deepEqual(posts, [
     'how-i-finish-and-record-work.md',
@@ -105,7 +105,7 @@ test('실제 글과 LocalMind 프로젝트만 콘텐츠 컬렉션에 남는다',
     'sdd-5docs-spec.md',
     'sdd-5docs-tasks.md',
   ]);
-  assert.deepEqual(projects, ['localmind.md']);
+  assert.deepEqual(projects, ['localmind-addons.md', 'localmind.md']);
   assert.equal(existsSync(new URL('../src/pages/blog/[...slug].astro', import.meta.url)), true);
 });
 
@@ -177,6 +177,25 @@ test('sdd-5docs를 들어가는 글과 문서별 다섯 편으로 설명한다',
   assert.match(posts[5], /review\.md/);
   assert.match(posts.join('\n'), /작업 크기에 비례/);
   assert.match(posts.join('\n'), /LocalMind/);
+});
+
+test('localmind-addons 프로젝트는 선택 설치형 AI 위임 프로토콜을 설명한다', () => {
+  const project = read('src/content/projects/localmind-addons.md');
+  const collections = read('src/content.config.ts');
+  const detailPage = read('src/pages/projects/[...slug].astro');
+
+  assert.match(project, /localmind-core/);
+  assert.match(project, /shape/);
+  assert.match(project, /sdd-5docs/);
+  assert.match(project, /goal-impl/);
+  assert.match(project, /선택 설치/);
+  assert.match(project, /형식을 고정하지/);
+  assert.match(project, /현재 저장소는 비공개/);
+  assert.doesNotMatch(project, /repository: https:\/\/github\.com\/shaul1991\/localmind-addons/);
+  assert.match(collections, /facts: z\.array\(z\.string\(\)\)/);
+  assert.match(collections, /initials: z\.string\(\)/);
+  assert.match(detailPage, /project\.data\.facts/);
+  assert.match(detailPage, /project\.data\.initials/);
 });
 
 test('LocalMind 상세 페이지는 비개발자 설명과 접근 가능한 시각화를 제공한다', () => {

@@ -5,6 +5,8 @@ year: '2026'
 stack: [Python, MCP, Semantic Search]
 featured: true
 repository: https://github.com/shaul1991/localmind
+facts: [직접 사용하며 개선 중, 단일 기기 · 선택적 서버, 2026년 시작]
+initials: LM
 ---
 
 <section id="problem" class="story-section">
