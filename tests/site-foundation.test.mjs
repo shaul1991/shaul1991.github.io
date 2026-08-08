@@ -218,14 +218,18 @@ test('모든 글은 핵심과 실행 기준을 짧게 제시한다', () => {
   filenames.forEach((filename) => {
     const content = read(`src/content/posts/${filename}`);
     const body = content.replace(/^---\n[\s\S]*?\n---\n/, '').trim();
-    const nonspaceLength = body.replace(/\s/g, '').length;
+    const visibleTextLength = body
+      .replace(/<[^>]+>/g, '')
+      .replace(/[`#|*]/g, '')
+      .replace(/\s/g, '')
+      .length;
     const proseBlocks = body
       .split(/\n\s*\n/)
       .filter((block) => !/^(##|- |\d+\.|\||```)/.test(block.trim()));
 
     assert.match(body, /## 핵심\n/);
     assert.match(body, /(^|\n)(?:- |\d+\. |\|)/m);
-    assert.ok(nonspaceLength <= 750, `${filename}은 핵심만 남겨야 합니다: ${nonspaceLength}자`);
+    assert.ok(visibleTextLength <= 500, `${filename}은 핵심만 남겨야 합니다: ${visibleTextLength}자`);
     assert.ok(proseBlocks.length <= 4, `${filename}의 서술 문단이 너무 많습니다: ${proseBlocks.length}개`);
   });
 
