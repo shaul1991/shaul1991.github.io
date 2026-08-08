@@ -95,7 +95,7 @@ test('실제 글과 LocalMind 프로젝트만 콘텐츠 컬렉션에 남는다',
   const posts = readdirSync(new URL('../src/content/posts', import.meta.url)).filter((name) => /\.mdx?$/.test(name)).sort();
   const projects = readdirSync(new URL('../src/content/projects', import.meta.url)).filter((name) => /\.mdx?$/.test(name));
 
-  assert.deepEqual(posts, ['how-i-finish-and-record-work.md', 'how-i-work-with-ai.md']);
+  assert.deepEqual(posts, ['how-i-finish-and-record-work.md', 'how-i-use-sdd-5docs.md', 'how-i-work-with-ai.md']);
   assert.deepEqual(projects, ['localmind.md']);
   assert.equal(existsSync(new URL('../src/pages/blog/[...slug].astro', import.meta.url)), true);
 });
@@ -141,6 +141,22 @@ test('첫 글은 LocalMind 기록에 근거한 작업 흐름과 의사결정 방
   assert.deepEqual(usedTokens.filter((token) => !definedTokens.has(token)), []);
   assert.match(home, /getCollection\('posts'\)/);
   assert.doesNotMatch(blogIndex, /아직 공개한 글이 없습니다/);
+});
+
+test('sdd-5docs를 실제 AI 위임 흐름으로 사용하는 글을 제공한다', () => {
+  const post = read('src/content/posts/how-i-use-sdd-5docs.md');
+  const body = post.split('---').at(-1).replace(/\s/g, '');
+
+  assert.match(post, /나는 실제로/);
+  assert.match(post, /## 핵심부터/);
+  assert.match(post, /goal\.md/);
+  assert.match(post, /spec\.md/);
+  assert.match(post, /plan\.md/);
+  assert.match(post, /tasks\.md/);
+  assert.match(post, /review\.md/);
+  assert.match(post, /작업 크기에 비례/);
+  assert.match(post, /LocalMind/);
+  assert.ok(body.length <= 2000, `글 한 편은 3~4분 분량이어야 합니다: ${body.length}자`);
 });
 
 test('LocalMind 상세 페이지는 비개발자 설명과 접근 가능한 시각화를 제공한다', () => {
