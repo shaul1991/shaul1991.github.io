@@ -130,6 +130,26 @@ test('디자인 시스템 카탈로그에서 토큰과 공용 컴포넌트를 �
   assert.match(catalog, /글 하단 탐색/);
 });
 
+test('공용 사이트 푸터는 짧은 페이지를 마감하고 디자인 시스템에서 같은 컴포넌트를 사용한다', () => {
+  const footer = read('src/components/SiteFooter.astro');
+  const layout = read('src/layouts/BaseLayout.astro');
+  const catalog = read('src/pages/design-system.astro');
+  const home = read('src/pages/index.astro');
+
+  assert.match(footer, /<footer class="site-footer"/);
+  assert.match(footer, /aria-label="하단 탐색"/);
+  assert.match(footer, /href="\/blog"/);
+  assert.match(footer, /href="\/projects"/);
+  assert.match(footer, /https:\/\/github\.com\/shaul1991/);
+  assert.match(layout, /import SiteFooter from/);
+  assert.match(layout, /<slot \/>\s*<SiteFooter \/>/);
+  assert.match(layout, /min-height: 100svh/);
+  assert.match(layout, /:global\(main\) \{ flex: 1; \}/);
+  assert.match(catalog, /import SiteFooter from/);
+  assert.match(catalog, /<SiteFooter \/>/);
+  assert.doesNotMatch(home, /<footer class="container">/);
+});
+
 test('모바일 헤더는 접고 펼칠 수 있는 좌우 사이드바를 제공한다', () => {
   const header = read('src/components/Header.astro');
 

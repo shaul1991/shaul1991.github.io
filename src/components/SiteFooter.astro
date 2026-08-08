@@ -1,0 +1,74 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-main container">
+    <div class="footer-intro">
+      <a class="footer-wordmark" href="/" aria-label="Shaul Kim 홈">SK<span>.</span></a>
+      <p>만들고, 기록하고, 다음 작업으로 이어갑니다.</p>
+    </div>
+
+    <nav class="footer-nav" aria-label="하단 탐색">
+      <a href="/blog">글</a>
+      <a href="/projects">프로젝트</a>
+      <a href="https://github.com/shaul1991" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+    </nav>
+  </div>
+
+  <div class="footer-meta container">
+    <span>© {year} Shaul Kim</span>
+    <a href="#top">맨 위로 <span aria-hidden="true">↑</span></a>
+  </div>
+</footer>
+
+<style lang="scss">
+  .site-footer {
+    color: var(--color-ink);
+    background: var(--color-surface-raised);
+    border-top: 1px solid var(--color-line);
+  }
+  .footer-main {
+    display: flex;
+    gap: var(--space-12);
+    align-items: end;
+    justify-content: space-between;
+    padding-block: var(--space-12);
+  }
+  .footer-intro { display: grid; gap: var(--space-3); }
+  .footer-wordmark {
+    width: fit-content;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    line-height: 1;
+    text-decoration: none;
+  }
+  .footer-wordmark span { color: var(--color-accent); }
+  .footer-intro p { margin: 0; color: var(--color-muted); font-size: var(--text-sm); }
+  .footer-nav { display: flex; flex-wrap: wrap; gap: var(--space-6); }
+  .footer-nav a, .footer-meta a { font-size: var(--text-sm); font-weight: 800; text-decoration: none; }
+  .footer-nav span, .footer-meta span[aria-hidden='true'] { color: var(--color-accent-strong); }
+  .footer-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-4);
+    color: var(--color-muted);
+    border-top: 1px solid var(--color-line);
+    font-size: var(--text-xs);
+  }
+  .footer-meta a { color: var(--color-muted); }
+  .footer-meta a:hover { color: var(--color-accent-strong); }
+
+  @media (max-width: 38rem) {
+    .footer-main {
+      display: grid;
+      gap: var(--space-8);
+      align-items: start;
+      padding-block: var(--space-8);
+    }
+    .footer-nav { gap: var(--space-4); }
+    .footer-nav a { display: inline-flex; min-height: 2.75rem; align-items: center; }
+    .footer-meta { padding-block: var(--space-4); }
+  }
+</style>

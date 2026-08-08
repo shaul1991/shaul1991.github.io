@@ -1,5 +1,6 @@
 ---
 import '../styles/index.scss';
+import SiteFooter from '../components/SiteFooter.astro';
 
 interface Props { title: string; description?: string; }
 const { title, description = 'Shaul Kim — 개발하고, 만들고, 꾸준히 배우는 사람.' } = Astro.props;
@@ -16,5 +17,15 @@ const { title, description = 'Shaul Kim — 개발하고, 만들고, 꾸준히 �
       if (savedTheme) document.documentElement.dataset.theme = savedTheme;
     </script>
   </head>
-  <body><slot /></body>
+  <body>
+    <div class="site-shell">
+      <slot />
+      <SiteFooter />
+    </div>
+  </body>
 </html>
+
+<style>
+  .site-shell { display: flex; min-height: 100svh; flex-direction: column; }
+  .site-shell > :global(main) { flex: 1; }
+</style>
