@@ -116,10 +116,16 @@ test('LocalMind 상세 페이지는 비개발자 설명과 접근 가능한 시�
   assert.match(project, /작게 시작해 필요할 때 확장/);
   assert.match(project, /MCP 연결 설정을 stdio에서 HTTP로/);
   assert.match(project, /class="expansion-path"/);
+  assert.match(project, /class="architecture-flow architecture-flow-stepper"/);
+  assert.match(detailPage, /@media \(max-width: 38rem\)[\s\S]+architecture-flow-stepper/);
+  assert.match(detailPage, /architecture-flow-stepper\).*grid-template-columns: 1fr/);
+  assert.doesNotMatch(project, /<figure class="architecture-map">[\s\S]*?<svg/);
+  assert.doesNotMatch(project, /#08111f|#0d1727/);
+  assert.match(detailPage, /\.architecture-map\).*background: var\(--color-surface-raised\)/);
   assert.match(project, /class="deployment-modes"/);
   assert.match(project, /class="before-after"/);
   assert.match(project, /class="project-flow"/);
-  assert.match(project, /<svg[^>]+role="img"/);
+  assert.match(project, /class="architecture-flow architecture-flow-stepper" role="img"/);
   assert.match(project, /capture_note/);
   assert.match(project, /search_notes/);
   assert.match(project, /whoami/);
