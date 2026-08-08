@@ -110,6 +110,9 @@ test('LocalMind 상세 페이지는 비개발자 설명과 접근 가능한 시�
   assert.match(project, /https:\/\/github\.com\/shaul1991\/localmind/);
   assert.match(project, /한 대의 기기/);
   assert.match(project, /서버는 필수가 아닙니다/);
+  assert.match(project, /로컬 stdio MCP/);
+  assert.match(project, /원격 HTTP MCP/);
+  assert.match(project, /어느 방식이든[^<]+MCP/);
   assert.match(project, /class="deployment-modes"/);
   assert.match(project, /class="before-after"/);
   assert.match(project, /class="project-flow"/);

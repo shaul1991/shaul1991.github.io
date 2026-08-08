@@ -66,20 +66,20 @@ repository: https://github.com/shaul1991/localmind
 <section id="architecture" class="story-section">
   <p class="section-label">04 · 실행 방식</p>
   <h2>한 대의 기기에서 시작하고, 필요할 때만 서버로 확장합니다.</h2>
-  <p class="section-intro"><strong>서버는 필수가 아닙니다.</strong> LocalMind와 개인 기록, AI 도구를 한 대의 컴퓨터 안에 두고 사용할 수 있습니다. 여러 기기가 같은 기억을 함께 사용해야 할 때만 홈 서버나 원격 서버 구성을 선택하면 됩니다.</p>
+  <p class="section-intro"><strong>서버는 필수가 아닙니다.</strong> 어느 방식이든 AI 도구와 LocalMind는 MCP로 연결됩니다. 차이는 LocalMind가 어디에서 실행되고 어떤 전송 방식을 쓰느냐입니다. 한 대의 기기에서는 로컬 stdio MCP를 사용하고, 여러 기기가 하나의 기억을 공유할 때는 선택한 서버의 원격 HTTP MCP를 사용합니다.</p>
 
   <div class="deployment-modes" aria-label="LocalMind의 두 가지 실행 방식">
     <article class="deployment-mode local-mode">
       <span class="mode-badge">기본 · 가장 단순한 구성</span>
-      <h3>한 대의 기기에서 사용</h3>
-      <p>LocalMind, AI 도구, 개인 기록이 같은 컴퓨터 안에서 작동합니다. 별도의 홈 서버나 원격 연결이 필요하지 않습니다.</p>
-      <div class="mode-flow" aria-label="한 대의 기기 내부 흐름"><span>AI 도구</span><b aria-hidden="true">→</b><span>LocalMind</span><b aria-hidden="true">→</b><span>내 기록</span></div>
+      <h3>한 대의 기기 · 로컬 stdio MCP</h3>
+      <p>AI 앱이 같은 컴퓨터에서 실행되는 LocalMind와 로컬 stdio MCP로 통신합니다. LocalMind와 개인 기록도 그 컴퓨터 안에 있으므로 별도의 서버나 원격 연결은 필요하지 않습니다.</p>
+      <div class="mode-flow" aria-label="한 대의 기기 MCP 흐름"><span>AI 앱</span><b aria-hidden="true">→</b><span>stdio MCP</span><b aria-hidden="true">→</b><span>LocalMind · 내 기록</span></div>
     </article>
     <article class="deployment-mode shared-mode">
       <span class="mode-badge">선택 · 여러 기기 공유</span>
-      <h3>홈·원격 서버로 확장</h3>
-      <p>노트북과 데스크톱 등 여러 기기에서 같은 기억에 접근하고 싶을 때 사용합니다. 서버는 편의를 위한 선택 사항입니다.</p>
-      <div class="mode-flow" aria-label="여러 기기 공유 흐름"><span>여러 기기</span><b aria-hidden="true">→</b><span>선택한 서버</span><b aria-hidden="true">→</b><span>공통 기록</span></div>
+      <h3>여러 기기 · 원격 HTTP MCP</h3>
+      <p>각 기기의 AI 앱이 홈 서버나 원격 서버에서 실행되는 LocalMind에 원격 HTTP MCP로 연결됩니다. 여러 기기가 같은 기록을 공유할 때 선택하는 확장 방식입니다.</p>
+      <div class="mode-flow" aria-label="여러 기기 MCP 흐름"><span>여러 기기의 AI 앱</span><b aria-hidden="true">→</b><span>HTTP MCP</span><b aria-hidden="true">→</b><span>LocalMind · 공통 기록</span></div>
     </article>
   </div>
 
