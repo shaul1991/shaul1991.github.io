@@ -138,9 +138,13 @@ test('공용 사이트 푸터는 짧은 페이지를 마감하고 디자인 시�
 
   assert.match(footer, /<footer class="site-footer"/);
   assert.match(footer, /aria-label="하단 탐색"/);
-  assert.match(footer, /href="\/blog"/);
-  assert.match(footer, /href="\/projects"/);
+  assert.match(footer, /Shaul Kim/);
+  assert.match(footer, /실제 프로젝트와 작업 과정을 기록합니다/);
+  assert.match(footer, /GitHub에서 작업 보기/);
   assert.match(footer, /https:\/\/github\.com\/shaul1991/);
+  assert.doesNotMatch(footer, /href="\/blog"/);
+  assert.doesNotMatch(footer, /href="\/projects"/);
+  assert.doesNotMatch(footer, /background: var\(--color-surface-raised\)/);
   assert.match(layout, /import SiteFooter from/);
   assert.match(layout, /<slot \/>\s*<SiteFooter \/>/);
   assert.match(layout, /min-height: 100svh/);
