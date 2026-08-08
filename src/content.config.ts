@@ -12,6 +12,8 @@ const posts = defineCollection({
     featured: z.boolean().default(false),
     series: z.string().optional(),
     seriesOrder: z.number().int().positive().optional(),
+    editor: z.literal('한결'),
+    editorReview: z.string(),
   }),
 });
 

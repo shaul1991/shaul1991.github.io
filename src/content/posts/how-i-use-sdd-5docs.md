@@ -6,6 +6,8 @@ tags: [작업 흐름, SDD, AI 위임]
 featured: true
 series: sdd-5docs
 seriesOrder: 1
+editor: 한결
+editorReview: 2026-08-08-series-consolidation
 ---
 
 나는 실제로 영향 범위가 큰 AI 작업에만 `sdd-5docs`를 사용한다.

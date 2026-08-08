@@ -6,6 +6,8 @@ tags: [작업 흐름, AI 협업, 의사결정]
 featured: true
 series: 나의 작업 흐름
 seriesOrder: 1
+editor: 한결
+editorReview: 2026-08-08-series-consolidation
 ---
 
 AI는 실행을 빠르게 만든다. 목표와 위험을 대신 결정하게 하지는 않는다.

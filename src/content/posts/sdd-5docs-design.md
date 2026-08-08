@@ -6,6 +6,8 @@ tags: [작업 흐름, SDD, 설계]
 featured: false
 series: sdd-5docs
 seriesOrder: 2
+editor: 한결
+editorReview: 2026-08-08-series-consolidation
 ---
 
 구현 전에 `goal.md`, `spec.md`, `plan.md`를 분리하면 “왜”, “무엇”, “어떻게”가 섞이지 않는다.

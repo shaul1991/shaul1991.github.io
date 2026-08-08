@@ -7,6 +7,8 @@ tags: [작업 흐름, 검증, LocalMind]
 featured: false
 series: 나의 작업 흐름
 seriesOrder: 2
+editor: 한결
+editorReview: 2026-08-08-series-consolidation
 ---
 
 작업은 구현이 아니라 검증과 기록까지 끝나야 완료다.

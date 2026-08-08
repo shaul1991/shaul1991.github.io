@@ -194,6 +194,35 @@ test('운영 페이지는 CSS를 HTML에 포함해 배포 직후에도 스타일
   assert.match(config, /inlineStylesheets: 'always'/);
 });
 
+test('블로그 글은 전담 편집자 승인 후에만 반영한다', () => {
+  const agentRules = read('AGENTS.md');
+  const editor = read('docs/blog-editor.md');
+  const collections = read('src/content.config.ts');
+  const posts = readdirSync(new URL('../src/content/posts', import.meta.url)).filter((name) => /\.mdx?$/.test(name));
+
+  assert.match(agentRules, /src\/content\/posts\//);
+  assert.match(agentRules, /blog-editor/);
+  assert.match(agentRules, /한결/);
+  assert.match(agentRules, /모두 `승인`일 때만/);
+  assert.match(editor, /각 핵심에는 의미와 적용 경계를 설명하는 1~2줄/);
+  assert.match(editor, /정확성[\s\S]+설명 충분성[\s\S]+해석 일관성/);
+  assert.match(editor, /시리즈는 글자 수가 아니라 독자가 답을 얻으려는 질문 단위/);
+  assert.match(editor, /수정 필요[\s\S]+보류/);
+  assert.match(collections, /editor: z\.literal\('한결'\)/);
+  assert.match(collections, /editorReview: z\.string\(\)/);
+
+  for (const filename of posts) {
+    const post = read(`src/content/posts/${filename}`);
+    const reviewId = post.match(/editorReview: ([^\n]+)/)?.[1];
+    assert.match(post, /editor: 한결/);
+    assert.ok(reviewId, `${filename}에 편집 평가 기록이 필요합니다`);
+    assert.ok(
+      existsSync(new URL(`../docs/blog-reviews/${reviewId}.md`, import.meta.url)),
+      `${filename}의 편집 평가 기록을 찾을 수 없습니다: ${reviewId}`,
+    );
+  }
+});
+
 test('실제 글과 실제 프로젝트만 콘텐츠 컬렉션에 남는다', () => {
   const posts = readdirSync(new URL('../src/content/posts', import.meta.url)).filter((name) => /\.mdx?$/.test(name)).sort();
   const projects = readdirSync(new URL('../src/content/projects', import.meta.url)).filter((name) => /\.mdx?$/.test(name)).sort();

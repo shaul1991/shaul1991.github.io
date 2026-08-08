@@ -6,6 +6,8 @@ tags: [작업 흐름, SDD, 검증]
 featured: false
 series: sdd-5docs
 seriesOrder: 3
+editor: 한결
+editorReview: 2026-08-08-series-consolidation
 ---
 
 `tasks.md`는 실행을 닫고, `review.md`는 완료 판단을 닫는다.
