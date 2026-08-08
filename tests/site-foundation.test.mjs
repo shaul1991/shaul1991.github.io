@@ -48,7 +48,8 @@ test('디자인 시스템 카탈로그에서 토큰과 공용 컴포넌트를 �
   assert.match(catalog, /id="spacing"/);
   assert.match(catalog, /id="components"/);
   assert.match(catalog, /<ProjectCard/);
-  assert.doesNotMatch(catalog, /<PostPreview/);
+  assert.match(catalog, /<ArticleNavigation/);
+  assert.match(catalog, /글 하단 탐색/);
 });
 
 test('모바일 헤더는 접고 펼칠 수 있는 좌우 사이드바를 제공한다', () => {
@@ -106,6 +107,7 @@ test('첫 글은 LocalMind 기록에 근거한 작업 흐름과 의사결정 방
   const collections = read('src/content.config.ts');
   const blogIndex = read('src/pages/blog/index.astro');
   const blogDetail = read('src/pages/blog/[...slug].astro');
+  const articleNavigation = read('src/components/ArticleNavigation.astro');
   const home = read('src/pages/index.astro');
 
   assert.match(post, /AI에게 맡길 일과 내가 결정할 일/);
@@ -127,13 +129,15 @@ test('첫 글은 LocalMind 기록에 근거한 작업 흐름과 의사결정 방
   assert.match(collections, /const posts = defineCollection/);
   assert.match(blogIndex, /getCollection\('posts'\)/);
   assert.match(blogDetail, /getCollection\('posts'\)/);
-  assert.match(blogDetail, /@media \(max-width: 38rem\)[\s\S]+\.series-nav a \{[^}]*padding: var\(--space-4\)/);
-  assert.match(blogDetail, /@media \(max-width: 38rem\)[\s\S]+\.series-nav strong \{[^}]*font-size: var\(--text-base\)/);
-  assert.match(blogDetail, /\.article-footer \{[^}]*border-top: 1px solid var\(--color-line\)/);
-  assert.match(blogDetail, /\.article-footer \{[^}]*padding-block: var\(--space-12\) max\(var\(--space-24\), 16vh\)/);
+  assert.match(blogDetail, /<ArticleNavigation/);
+  assert.match(articleNavigation, /@media \(max-width: 38rem\)[\s\S]+\.series-nav a \{[^}]*padding: var\(--space-4\)/);
+  assert.match(articleNavigation, /@media \(max-width: 38rem\)[\s\S]+\.series-nav strong \{[^}]*font-size: var\(--text-base\)/);
+  assert.match(articleNavigation, /\.article-footer \{[^}]*border-top: 1px solid var\(--color-line\)/);
+  assert.match(articleNavigation, /\.article-footer \{[^}]*padding-block: var\(--space-12\) var\(--space-24\)/);
+  assert.match(articleNavigation, /@media \(max-width: 38rem\)[\s\S]+\.article-footer \{[^}]*padding-block: var\(--space-12\) var\(--space-16\)/);
   const tokenSource = read('src/styles/tokens/_index.scss');
   const definedTokens = new Set([...tokenSource.matchAll(/(--[\w-]+):/g)].map(([, token]) => token));
-  const usedTokens = [...blogDetail.matchAll(/var\((--[\w-]+)/g)].map(([, token]) => token);
+  const usedTokens = [...`${blogDetail}\n${articleNavigation}`.matchAll(/var\((--[\w-]+)/g)].map(([, token]) => token);
   assert.deepEqual(usedTokens.filter((token) => !definedTokens.has(token)), []);
   assert.match(home, /getCollection\('posts'\)/);
   assert.doesNotMatch(blogIndex, /아직 공개한 글이 없습니다/);
