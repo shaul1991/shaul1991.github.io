@@ -212,6 +212,24 @@ test('실제 글과 실제 프로젝트만 콘텐츠 컬렉션에 남는다', ()
   assert.equal(existsSync(new URL('../src/pages/blog/[...slug].astro', import.meta.url)), true);
 });
 
+test('모든 글은 핵심과 실행 기준을 짧게 제시한다', () => {
+  const filenames = readdirSync(new URL('../src/content/posts', import.meta.url)).filter((name) => /\.mdx?$/.test(name));
+
+  filenames.forEach((filename) => {
+    const content = read(`src/content/posts/${filename}`);
+    const body = content.replace(/^---\n[\s\S]*?\n---\n/, '').trim();
+    const nonspaceLength = body.replace(/\s/g, '').length;
+    const proseBlocks = body
+      .split(/\n\s*\n/)
+      .filter((block) => !/^(##|- |\d+\.|\||```)/.test(block.trim()));
+
+    assert.match(body, /## 핵심\n/);
+    assert.match(body, /(^|\n)(?:- |\d+\. |\|)/m);
+    assert.ok(nonspaceLength <= 750, `${filename}은 핵심만 남겨야 합니다: ${nonspaceLength}자`);
+    assert.ok(proseBlocks.length <= 4, `${filename}의 서술 문단이 너무 많습니다: ${proseBlocks.length}개`);
+  });
+});
+
 test('첫 글은 LocalMind 기록에 근거한 작업 흐름과 의사결정 방식을 설명한다', () => {
   const firstPost = read('src/content/posts/how-i-work-with-ai.md');
   const secondPost = read('src/content/posts/how-i-finish-and-record-work.md');
@@ -229,13 +247,13 @@ test('첫 글은 LocalMind 기록에 근거한 작업 흐름과 의사결정 방
   assert.match(post, /self-review/);
   assert.match(post, /사람이 최종 결정/);
   assert.match(post, /LocalMind/);
-  assert.match(firstPost, /## 핵심부터/);
-  assert.match(secondPost, /## 핵심부터/);
+  assert.match(firstPost, /## 핵심\n/);
+  assert.match(secondPost, /## 핵심\n/);
   assert.match(firstPost, /seriesOrder: 1/);
   assert.match(secondPost, /seriesOrder: 2/);
   for (const content of [firstPost, secondPost]) {
-    const body = content.split('---').at(-1).replace(/\s/g, '');
-    assert.ok(body.length <= 2000, `글 한 편은 3~4분 분량이어야 합니다: ${body.length}자`);
+    const body = content.replace(/^---\n[\s\S]*?\n---\n/, '').replace(/\s/g, '');
+    assert.ok(body.length <= 750, `글은 핵심만 남겨야 합니다: ${body.length}자`);
   }
   assert.match(collections, /series: z\.string\(\)\.optional/);
   assert.match(collections, /const posts = defineCollection/);
@@ -269,7 +287,7 @@ test('sdd-5docs를 들어가는 글과 문서별 다섯 편으로 설명한다',
   posts.forEach((post, index) => {
     assert.match(post, /series: sdd-5docs/);
     assert.match(post, new RegExp(`seriesOrder: ${index + 1}`));
-    assert.match(post, /## 핵심부터/);
+    assert.match(post, /## 핵심\n/);
   });
 
   assert.match(posts[0], /나는 실제로/);
