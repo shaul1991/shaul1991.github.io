@@ -202,11 +202,8 @@ test('실제 글과 실제 프로젝트만 콘텐츠 컬렉션에 남는다', ()
     'how-i-finish-and-record-work.md',
     'how-i-use-sdd-5docs.md',
     'how-i-work-with-ai.md',
-    'sdd-5docs-goal.md',
-    'sdd-5docs-plan.md',
-    'sdd-5docs-review.md',
-    'sdd-5docs-spec.md',
-    'sdd-5docs-tasks.md',
+    'sdd-5docs-design.md',
+    'sdd-5docs-execution.md',
   ]);
   assert.deepEqual(projects, ['localmind-addons.md', 'localmind.md']);
   assert.equal(existsSync(new URL('../src/pages/blog/[...slug].astro', import.meta.url)), true);
@@ -225,12 +222,13 @@ test('모든 글은 핵심과 실행 기준을 짧게 제시한다', () => {
       .length;
     const proseBlocks = body
       .split(/\n\s*\n/)
-      .filter((block) => !/^(##|- |\d+\.|\||```)/.test(block.trim()));
+      .filter((block) => !/^(##|- |\d+\.|\||```|<)/.test(block.trim()));
 
     assert.match(body, /## 핵심\n/);
     assert.match(body, /(^|\n)(?:- |\d+\. |\|)/m);
-    assert.ok(visibleTextLength <= 500, `${filename}은 핵심만 남겨야 합니다: ${visibleTextLength}자`);
-    assert.ok(proseBlocks.length <= 4, `${filename}의 서술 문단이 너무 많습니다: ${proseBlocks.length}개`);
+    assert.ok(visibleTextLength <= 1000, `${filename}은 3~4분 안에 읽을 수 있어야 합니다: ${visibleTextLength}자`);
+    assert.ok(proseBlocks.length >= 2, `${filename}은 핵심을 해석할 설명 문단이 필요합니다`);
+    assert.ok(proseBlocks.length <= 8, `${filename}의 서술 문단이 너무 많습니다: ${proseBlocks.length}개`);
   });
 
   const article = read('src/pages/blog/[...slug].astro');
@@ -261,13 +259,18 @@ test('첫 글은 LocalMind 기록에 근거한 작업 흐름과 의사결정 방
   assert.match(post, /self-review/);
   assert.match(post, /사람이 최종 결정/);
   assert.match(post, /LocalMind/);
+  assert.match(firstPost, /요청이 모호한 채로 시작하면/);
+  assert.match(secondPost, /검증이 없으면/);
   assert.match(firstPost, /## 핵심\n/);
   assert.match(secondPost, /## 핵심\n/);
   assert.match(firstPost, /seriesOrder: 1/);
   assert.match(secondPost, /seriesOrder: 2/);
   for (const content of [firstPost, secondPost]) {
-    const body = content.replace(/^---\n[\s\S]*?\n---\n/, '').replace(/\s/g, '');
-    assert.ok(body.length <= 750, `글은 핵심만 남겨야 합니다: ${body.length}자`);
+    const body = content
+      .replace(/^---\n[\s\S]*?\n---\n/, '')
+      .replace(/<[^>]+>/g, '')
+      .replace(/[`#|*\s]/g, '');
+    assert.ok(body.length <= 1000, `글은 3~4분 안에 읽을 수 있어야 합니다: ${body.length}자`);
   }
   assert.match(collections, /series: z\.string\(\)\.optional/);
   assert.match(collections, /const posts = defineCollection/);
@@ -287,14 +290,11 @@ test('첫 글은 LocalMind 기록에 근거한 작업 흐름과 의사결정 방
   assert.doesNotMatch(blogIndex, /아직 공개한 글이 없습니다/);
 });
 
-test('sdd-5docs를 들어가는 글과 문서별 다섯 편으로 설명한다', () => {
+test('sdd-5docs는 개요·설계·실행 세 편으로 설명한다', () => {
   const filenames = [
     'how-i-use-sdd-5docs.md',
-    'sdd-5docs-goal.md',
-    'sdd-5docs-spec.md',
-    'sdd-5docs-plan.md',
-    'sdd-5docs-tasks.md',
-    'sdd-5docs-review.md',
+    'sdd-5docs-design.md',
+    'sdd-5docs-execution.md',
   ];
   const posts = filenames.map((filename) => read(`src/content/posts/${filename}`));
 
@@ -305,13 +305,16 @@ test('sdd-5docs를 들어가는 글과 문서별 다섯 편으로 설명한다',
   });
 
   assert.match(posts[0], /나는 실제로/);
+  assert.match(posts[0], /문서를 나누면/);
   assert.match(posts[0], /<ol class="process-flow"/);
   assert.match(posts[0], /aria-hidden="true">🎯/);
   assert.match(posts[1], /goal\.md/);
-  assert.match(posts[2], /spec\.md/);
-  assert.match(posts[3], /plan\.md/);
-  assert.match(posts[4], /tasks\.md/);
-  assert.match(posts[5], /review\.md/);
+  assert.match(posts[1], /spec\.md/);
+  assert.match(posts[1], /plan\.md/);
+  assert.match(posts[1], /해석 차이/);
+  assert.match(posts[2], /tasks\.md/);
+  assert.match(posts[2], /review\.md/);
+  assert.match(posts[2], /완료 선언/);
   assert.match(posts.join('\n'), /작업 크기에 비례/);
   assert.match(posts.join('\n'), /LocalMind/);
 });
