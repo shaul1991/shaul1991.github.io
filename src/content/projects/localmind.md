@@ -94,53 +94,32 @@ repository: https://github.com/shaul1991/localmind
   <p class="section-intro">아래 그림은 LocalMind의 필수 구조가 아니라, 제가 현재 사용 중인 홈 서버 구성의 예시입니다. 노트북과 AI 도구가 사설 네트워크를 통해 선택한 서버에 연결되므로 기기마다 서로 다른 기억이 쌓이는 문제를 줄일 수 있습니다.</p>
 
   <figure class="architecture-map">
-    <svg viewBox="0 0 960 470" role="img" aria-labelledby="localmind-architecture-title localmind-architecture-desc" xmlns="http://www.w3.org/2000/svg">
-      <title id="localmind-architecture-title">LocalMind의 선택적 여러 기기 구성</title>
-      <desc id="localmind-architecture-desc">여러 기기에서 사용할 때 AI 도구가 사설 네트워크를 거쳐 사용자가 선택한 서버의 LocalMind에 연결되고, LocalMind가 공통 개인 기록에서 관련 내용을 찾아 전달하는 선택적 구조입니다.</desc>
-      <defs>
-        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#1d2a3d" stroke-width="1"/></pattern>
-        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#67e8f9"/></marker>
-      </defs>
-      <rect width="960" height="470" fill="#08111f"/>
-      <rect width="960" height="470" fill="url(#grid)"/>
-      <path d="M250 220H350" stroke="#67e8f9" stroke-width="3" marker-end="url(#arrow)"/>
-      <path d="M560 220H650" stroke="#67e8f9" stroke-width="3" marker-end="url(#arrow)"/>
-      <path d="M780 305V355" stroke="#a78bfa" stroke-width="3" marker-end="url(#arrow)"/>
-      <path d="M650 255H560" stroke="#34d399" stroke-width="2" stroke-dasharray="8 7" marker-end="url(#arrow)"/>
-      <path d="M350 255H250" stroke="#34d399" stroke-width="2" stroke-dasharray="8 7" marker-end="url(#arrow)"/>
-      <g>
-        <rect x="40" y="130" width="210" height="170" rx="18" fill="#0d1e2c" stroke="#22d3ee" stroke-width="2"/>
-        <text x="70" y="172" fill="#67e8f9" font-size="15" font-weight="700">여러 기기의 AI 도구</text>
-        <text x="70" y="210" fill="#d8e2ef" font-size="14">MacBook · 홈 컴퓨터</text>
-        <text x="70" y="238" fill="#d8e2ef" font-size="14">Hermes · Claude · Codex</text>
-        <text x="70" y="274" fill="#91a2b8" font-size="12">질문하고, 맥락을 받습니다</text>
-      </g>
-      <g>
-        <rect x="350" y="160" width="210" height="120" rx="18" fill="#231b0d" stroke="#fbbf24" stroke-width="2" stroke-dasharray="8 6"/>
-        <text x="382" y="202" fill="#fcd34d" font-size="15" font-weight="700">사설 연결 통로</text>
-        <text x="382" y="231" fill="#d8e2ef" font-size="14">Tailscale + HTTP MCP</text>
-        <text x="382" y="257" fill="#91a2b8" font-size="12">허가된 연결만 통과</text>
-      </g>
-      <g>
-        <rect x="650" y="80" width="270" height="225" rx="18" fill="#0b281f" stroke="#34d399" stroke-width="2"/>
-        <text x="682" y="124" fill="#6ee7b7" font-size="15" font-weight="700">선택한 서버 · LocalMind</text>
-        <text x="682" y="158" fill="#d8e2ef" font-size="14">brief · search_notes</text>
-        <text x="682" y="184" fill="#d8e2ef" font-size="14">capture_note · whoami</text>
-        <rect x="682" y="215" width="206" height="58" rx="10" fill="#081a15" stroke="#236c55"/>
-        <text x="704" y="240" fill="#a7f3d0" font-size="12">질문과 가까운 기록을 찾고</text>
-        <text x="704" y="260" fill="#a7f3d0" font-size="12">필요한 만큼만 돌려줍니다</text>
-      </g>
-      <g>
-        <rect x="650" y="355" width="270" height="82" rx="18" fill="#21163d" stroke="#a78bfa" stroke-width="2"/>
-        <text x="682" y="389" fill="#c4b5fd" font-size="15" font-weight="700">개인 노트 · 결정 기록</text>
-        <text x="682" y="415" fill="#b7c1d1" font-size="12">하나의 기준점에서 보관하고 검색</text>
-      </g>
-      <text x="270" y="204" fill="#67e8f9" font-size="11">요청</text>
-      <text x="577" y="204" fill="#67e8f9" font-size="11">검색</text>
-      <text x="574" y="278" fill="#6ee7b7" font-size="11">맥락</text>
-      <text x="270" y="278" fill="#6ee7b7" font-size="11">답변</text>
-    </svg>
-    <figcaption class="architecture-caption">여러 기기에서 같은 기억을 공유하고 싶을 때 선택할 수 있는 확장 구성입니다. 한 대의 기기에서 사용할 때는 사설 연결 통로와 별도 서버가 필요하지 않습니다.</figcaption>
+    <div class="architecture-flow" role="img" aria-label="여러 기기의 AI 도구가 Tailscale과 HTTP MCP를 통해 선택한 서버의 LocalMind에 연결되고, LocalMind가 공통 개인 기록을 검색하는 흐름">
+      <article class="architecture-node">
+        <span>01 · AI 도구</span>
+        <h4>여러 기기</h4>
+        <p>MacBook · 홈 컴퓨터<br>Hermes · Claude · Codex</p>
+      </article>
+      <div class="architecture-connector" aria-hidden="true"><small>요청과 응답</small><b>→</b></div>
+      <article class="architecture-node">
+        <span>02 · 연결</span>
+        <h4>사설 연결 통로</h4>
+        <p>Tailscale<br>HTTP MCP</p>
+      </article>
+      <div class="architecture-connector" aria-hidden="true"><small>안전하게 전달</small><b>→</b></div>
+      <article class="architecture-node architecture-node-accent">
+        <span>03 · 처리</span>
+        <h4>선택한 서버의 LocalMind</h4>
+        <p>brief · search_notes<br>capture_note · whoami</p>
+      </article>
+      <div class="architecture-connector" aria-hidden="true"><small>검색과 기록</small><b>→</b></div>
+      <article class="architecture-node">
+        <span>04 · 기억</span>
+        <h4>개인 노트와 결정</h4>
+        <p>하나의 기준점에서<br>보관하고 검색</p>
+      </article>
+    </div>
+    <figcaption class="architecture-caption"><strong>선택적 확장 구성</strong> · 여러 기기에서 같은 기억을 공유하고 싶을 때 사용하는 방식입니다. 한 대의 기기에서 사용할 때는 사설 연결 통로와 별도 서버가 필요하지 않습니다.</figcaption>
   </figure>
 </section>
 
