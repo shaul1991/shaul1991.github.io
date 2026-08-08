@@ -272,6 +272,23 @@ test('모든 글은 핵심과 실행 기준을 짧게 제시한다', () => {
   assert.match(article, /@media \(max-width: 38rem\)[\s\S]+\.process-flow ol/);
 });
 
+test('블로그 본문 표는 모바일에서도 셀 경계와 열 너비를 구분한다', () => {
+  const styles = read('src/styles/index.scss');
+  const tokens = read('src/styles/tokens/_index.scss');
+  const catalog = read('src/pages/design-system.astro');
+
+  assert.match(tokens, /--color-line-strong:/);
+  assert.match(styles, /\.article-body table,[\s\S]+\.content-table-demo table/);
+  assert.match(styles, /border-collapse: collapse/);
+  assert.match(styles, /table-layout: fixed/);
+  assert.match(styles, /border: 1px solid var\(--color-line-strong\)/);
+  assert.match(styles, /\.article-body :is\(th, td\),[\s\S]+\.content-table-demo :is\(th, td\)/);
+  assert.match(styles, /overflow-wrap: anywhere/);
+  assert.match(styles, /@media \(max-width: 38rem\)[\s\S]+padding: var\(--space-3\) var\(--space-2\)/);
+  assert.match(catalog, /class="content-table-demo"/);
+  assert.match(catalog, /본문 표/);
+});
+
 test('첫 글은 LocalMind 기록에 근거한 작업 흐름과 의사결정 방식을 설명한다', () => {
   const firstPost = read('src/content/posts/how-i-work-with-ai.md');
   const secondPost = read('src/content/posts/how-i-finish-and-record-work.md');
