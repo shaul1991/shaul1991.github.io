@@ -1,0 +1,36 @@
+---
+interface Props {
+  label: string;
+  position?: string;
+}
+
+const { label, position } = Astro.props;
+---
+
+<span class="series-badge">
+  <span>시리즈 · {label}</span>
+  {position && <span class="series-position">{position}</span>}
+</span>
+
+<style lang="scss">
+  .series-badge {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    width: fit-content;
+    padding: var(--space-1) var(--space-2);
+    color: var(--color-ink);
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-accent-strong);
+    border-radius: 99rem;
+    font-size: var(--text-xs);
+    font-weight: 800;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .series-position {
+    padding-left: var(--space-2);
+    color: var(--color-muted);
+    border-left: 1px solid var(--color-accent-strong);
+  }
+</style>

@@ -1,4 +1,6 @@
 ---
+import SeriesBadge from './SeriesBadge.astro';
+
 interface Props { title: string; description: string; publishedAt: Date; tags: string[]; slug: string; series?: string; }
 const { title, description, publishedAt, tags, slug, series } = Astro.props;
 const date = new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' }).format(publishedAt);
@@ -9,7 +11,7 @@ const date = new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'short',
     <h3><a href={`/blog/${slug}`}>{title}</a></h3>
     <p class="description">{description}</p>
     <div class="tags">
-      {series && <span class="series-tag">시리즈 · {series}</span>}
+      {series && <SeriesBadge label={series} />}
       {tags.map((tag) => <span class="topic-tag">#{tag}</span>)}
     </div>
   </div>
@@ -22,6 +24,5 @@ const date = new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'short',
   h3 a { text-decoration: none; }
   .description { max-width: 48rem; }
   .tags { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-top: var(--space-3); font-size: var(--text-xs); font-weight: 700; }
-  .series-tag { padding: var(--space-1) var(--space-2); color: var(--color-ink); background: var(--color-accent-soft); border: 1px solid var(--color-accent-strong); border-radius: 99rem; white-space: nowrap; }
   .topic-tag { color: var(--color-muted); }
 </style>

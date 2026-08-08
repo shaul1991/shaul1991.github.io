@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ArticleNavigation from '../components/ArticleNavigation.astro';
 import PostPreview from '../components/PostPreview.astro';
+import SeriesBadge from '../components/SeriesBadge.astro';
 import SeriesFilter from '../components/SeriesFilter.astro';
 
 const colors = [
@@ -123,6 +124,14 @@ const contextGroups = [
             <ProjectCard title="LocalMind" summary="AI가 이전 결정의 맥락을 이어받도록 돕는 개인 지식 시스템입니다." year="2026" stack={['Python', 'MCP', 'Semantic Search']} href="/projects/localmind" />
           </div>
           <div class="component-block">
+            <div class="component-title"><div><h3>시리즈 배지</h3><p>연속해서 읽는 글의 소속과 현재 순서를 일반 주제 태그보다 명확하게 표시합니다.</p></div><code>SeriesBadge.astro</code></div>
+            <div class="component-row">
+              <SeriesBadge label="sdd-5docs" />
+              <SeriesBadge label="sdd-5docs" position="6/6" />
+              <SeriesBadge label="나의 작업 흐름" position="2/2" />
+            </div>
+          </div>
+          <div class="component-block">
             <div class="component-title"><div><h3>시리즈 필터와 태그</h3><p>전체 글과 시리즈를 전환하고, 각 글이 속한 시리즈를 일반 태그보다 먼저 보여 줍니다. 최신 편을 위에 두고 이전 편은 아래로 이어집니다.</p></div><code>SeriesFilter.astro · PostPreview.astro</code></div>
             <SeriesFilter seriesOptions={['나의 작업 흐름', 'sdd-5docs']} totalCount={8} selected="sdd-5docs" visibleCount={6} />
             <PostPreview
@@ -188,6 +197,7 @@ const contextGroups = [
   .component-title h3 { margin: 0; font-family: var(--font-display); font-size: var(--text-lg); font-weight: 400; }
   .component-title p { margin: var(--space-1) 0 0; color: var(--color-muted); font-size: var(--text-sm); }
   .empty-component > p { padding: var(--space-6); margin: 0; color: var(--color-muted); background: var(--color-surface-raised); border: 1px dashed var(--color-line); border-radius: var(--radius-md); }
+  .component-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
   .button-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
   .button { display: inline-flex; min-height: 2.75rem; align-items: center; padding-inline: var(--space-6); border-radius: 99rem; font-size: var(--text-sm); font-weight: 800; text-decoration: none; }
   .button.primary { color: var(--color-surface); background: var(--color-ink); }
