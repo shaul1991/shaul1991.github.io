@@ -65,7 +65,7 @@ const seriesLabel = post.data.series && post.data.seriesOrder
 
 <style lang="scss">
   .article-header { max-width: 64rem; padding-block: clamp(5rem, 12vw, 9rem) var(--space-16); }
-  .back-link { display: inline-block; margin-bottom: var(--space-10); color: var(--color-muted); font-size: var(--text-sm); font-weight: 800; text-decoration: none; }
+  .back-link { display: inline-block; margin-bottom: var(--space-12); color: var(--color-muted); font-size: var(--text-sm); font-weight: 800; text-decoration: none; }
   h1 { max-width: 58rem; margin: var(--space-4) 0 0; font-family: var(--font-display); font-size: clamp(3rem, 8vw, 6.75rem); font-weight: 400; letter-spacing: -.055em; line-height: .96; }
   .lead { max-width: 46rem; margin: var(--space-8) 0 0; color: var(--color-muted); font-size: var(--text-lg); line-height: 1.75; }
   .tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-8); color: var(--color-accent-strong); font-size: var(--text-xs); font-weight: 800; }
@@ -73,23 +73,23 @@ const seriesLabel = post.data.series && post.data.seriesOrder
   .article-body { max-width: 50rem; padding-block: var(--space-16) var(--space-24); margin-inline: auto; }
   .article-body :global(p), .article-body :global(li) { color: var(--color-muted); font-size: clamp(1rem, 1.4vw, 1.125rem); line-height: 1.9; }
   .article-body :global(p) { margin: 0 0 var(--space-6); }
-  .article-body :global(h2) { scroll-margin-top: 7rem; margin: var(--space-20) 0 var(--space-6); font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 400; letter-spacing: -.035em; line-height: 1.08; }
+  .article-body :global(h2) { scroll-margin-top: 7rem; margin: var(--space-16) 0 var(--space-6); font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 400; letter-spacing: -.035em; line-height: 1.08; }
   .article-body :global(h2:first-child) { margin-top: 0; }
   .article-body :global(ul) { padding-left: 1.25rem; margin: var(--space-6) 0 var(--space-8); }
   .article-body :global(li + li) { margin-top: var(--space-2); }
   .article-body :global(strong) { color: var(--color-ink); }
-  .article-body :global(pre) { overflow-x: auto; padding: var(--space-6); margin: var(--space-10) 0; color: var(--color-ink); background: var(--color-surface-raised); border: 1px solid var(--color-line); border-radius: var(--radius-md); font-size: var(--text-sm); line-height: 1.8; }
+  .article-body :global(pre) { overflow-x: auto; padding: var(--space-6); margin: var(--space-12) 0; color: var(--color-ink); background: var(--color-surface-raised); border: 1px solid var(--color-line); border-radius: var(--radius-md); font-size: var(--text-sm); line-height: 1.8; }
   .article-body :global(code) { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-  .series-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); max-width: 50rem; padding-bottom: var(--space-20); margin-inline: auto; }
-  .series-nav a { display: grid; gap: var(--space-2); min-width: 0; padding: var(--space-5); background: var(--color-surface-raised); border: 1px solid var(--color-line); border-radius: var(--radius-md); text-decoration: none; }
+  .series-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); max-width: 50rem; padding-bottom: var(--space-16); margin-inline: auto; }
+  .series-nav a { display: grid; gap: var(--space-2); min-width: 0; padding: var(--space-6); background: var(--color-surface-raised); border: 1px solid var(--color-line); border-radius: var(--radius-md); text-decoration: none; }
   .series-nav small { color: var(--color-accent-strong); font-size: var(--text-xs); font-weight: 800; }
   .series-nav strong { overflow-wrap: anywhere; font-family: var(--font-display); font-size: var(--text-lg); font-weight: 400; line-height: 1.25; }
   .series-nav .next { text-align: right; }
-  .article-footer { padding-block: var(--space-10) var(--space-24); border-top: 1px solid var(--color-line); }
+  .article-footer { padding-block: var(--space-12) max(var(--space-24), 16vh); border-top: 1px solid var(--color-line); }
   .article-footer a { font-weight: 800; }
   @media (max-width: 38rem) {
     .article-header { padding-block: var(--space-16) var(--space-12); }
-    .article-body { padding-block: var(--space-12) var(--space-20); }
+    .article-body { padding-block: var(--space-12) var(--space-24); }
     .article-body :global(h2) { margin-top: var(--space-16); }
     .article-body :global(pre) { padding: var(--space-4); font-size: var(--text-xs); }
     .series-nav { grid-template-columns: 1fr; gap: var(--space-3); padding-bottom: var(--space-12); }
