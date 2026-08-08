@@ -204,6 +204,11 @@ test('블로그 글은 전담 편집자 승인 후에만 반영한다', () => {
   assert.match(agentRules, /blog-editor/);
   assert.match(agentRules, /한결/);
   assert.match(agentRules, /모두 `승인`일 때만/);
+  assert.match(agentRules, /mcp__localmind_home__whoami/);
+  assert.match(agentRules, /mcp__localmind_home__search_notes/);
+  assert.match(editor, /LocalMind를 읽기 전용 근거 저장소/);
+  assert.match(editor, /현재 저장소[\s\S]+사용자의 최신 지시/);
+  assert.match(editor, /비공개 note 경로[\s\S]+공개 글/);
   assert.match(editor, /각 핵심에는 의미와 적용 경계를 설명하는 1~2줄/);
   assert.match(editor, /정확성[\s\S]+설명 충분성[\s\S]+해석 일관성/);
   assert.match(editor, /시리즈는 글자 수가 아니라 독자가 답을 얻으려는 질문 단위/);
