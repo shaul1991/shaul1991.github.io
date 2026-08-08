@@ -68,6 +68,13 @@ repository: https://github.com/shaul1991/localmind
   <h2>한 대의 기기에서 시작하고, 필요할 때만 서버로 확장합니다.</h2>
   <p class="section-intro"><strong>서버는 필수가 아닙니다.</strong> 어느 방식이든 AI 도구와 LocalMind는 MCP로 연결됩니다. 차이는 LocalMind가 어디에서 실행되고 어떤 전송 방식을 쓰느냐입니다. 한 대의 기기에서는 로컬 stdio MCP를 사용하고, 여러 기기가 하나의 기억을 공유할 때는 선택한 서버의 원격 HTTP MCP를 사용합니다.</p>
 
+  <div class="expansion-path" aria-label="한 대의 기기에서 여러 기기로 확장하는 과정">
+    <div class="expansion-step"><span>1 · 처음에는</span><strong>한 대의 기기에서 작게 시작</strong><small>로컬 stdio MCP</small></div>
+    <b class="expansion-arrow" aria-hidden="true">필요할 때 확장 →</b>
+    <div class="expansion-step"><span>2 · 공유가 필요해지면</span><strong>여러 기기가 같은 기억 사용</strong><small>원격 HTTP MCP</small></div>
+  </div>
+  <p class="expansion-note"><strong>작게 시작해 필요할 때 확장할 수 있습니다.</strong> 자동으로 바뀌는 것은 아니며, LocalMind와 기록을 선택한 서버로 옮기고 각 AI 앱의 MCP 연결 설정을 stdio에서 HTTP로 변경합니다. 사용하는 MCP 도구와 기록·검색 흐름은 그대로 유지됩니다.</p>
+
   <div class="deployment-modes" aria-label="LocalMind의 두 가지 실행 방식">
     <article class="deployment-mode local-mode">
       <span class="mode-badge">기본 · 가장 단순한 구성</span>

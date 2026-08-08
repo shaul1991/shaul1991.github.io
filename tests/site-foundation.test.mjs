@@ -113,6 +113,9 @@ test('LocalMind 상세 페이지는 비개발자 설명과 접근 가능한 시�
   assert.match(project, /로컬 stdio MCP/);
   assert.match(project, /원격 HTTP MCP/);
   assert.match(project, /어느 방식이든[^<]+MCP/);
+  assert.match(project, /작게 시작해 필요할 때 확장/);
+  assert.match(project, /MCP 연결 설정을 stdio에서 HTTP로/);
+  assert.match(project, /class="expansion-path"/);
   assert.match(project, /class="deployment-modes"/);
   assert.match(project, /class="before-after"/);
   assert.match(project, /class="project-flow"/);
