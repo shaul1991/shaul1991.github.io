@@ -145,12 +145,6 @@ const contextGroups = [
     .hero-visual { width: min(70vw, 24rem); }
     .project-body :global(.project-flow) { grid-template-columns: repeat(2, 1fr); }
     .project-body :global(.flow-step:nth-child(2)::after) { display: none; }
-    .project-body :global(.architecture-flow) { grid-template-columns: 1fr; }
-    .project-body :global(.architecture-node) { min-height: 0; }
-    .project-body :global(.architecture-connector) { gap: var(--space-1); padding-block: var(--space-1); }
-    .project-body :global(.architecture-connector small) { max-width: none; }
-    .project-body :global(.architecture-connector b) { font-size: 0; }
-    .project-body :global(.architecture-connector b::after) { content: '↓'; font-size: var(--text-lg); }
   }
   @media (max-width: 38rem) {
     .project-hero { gap: var(--space-10, 2.5rem); }
@@ -162,8 +156,15 @@ const contextGroups = [
     .project-body :global(.expansion-path) { padding: var(--space-4); }
     .project-body :global(.expansion-arrow) { font-size: 0; white-space: normal; }
     .project-body :global(.expansion-arrow::after) { content: '필요할 때 확장 ↓'; font-size: var(--text-xs); }
-    .project-body :global(.architecture-flow) { padding: var(--space-4); }
-    .project-body :global(.architecture-node), .project-body :global(.architecture-caption) { padding: var(--space-4); }
+    .project-body :global(.architecture-flow-compact) { grid-template-columns: minmax(0, 1fr) .65rem minmax(0, 1fr) .65rem minmax(0, 1fr) .65rem minmax(0, 1fr); gap: var(--space-1); padding: var(--space-2); }
+    .project-body :global(.architecture-flow-compact .architecture-node) { min-height: 4.75rem; align-content: center; padding: var(--space-1); border-radius: var(--radius-sm); }
+    .project-body :global(.architecture-flow-compact .architecture-node span) { font-size: .5625rem; letter-spacing: 0; }
+    .project-body :global(.architecture-flow-compact .architecture-node h4) { margin: var(--space-1) 0 0; font-family: var(--font-sans); font-size: .625rem; font-weight: 800; white-space: nowrap; }
+    .project-body :global(.architecture-flow-compact .architecture-node p) { display: none; }
+    .project-body :global(.architecture-flow-compact .architecture-connector) { min-width: 0; }
+    .project-body :global(.architecture-flow-compact .architecture-connector small) { display: none; }
+    .project-body :global(.architecture-flow-compact .architecture-connector b) { font-size: .75rem; }
+    .project-body :global(.architecture-caption) { padding: var(--space-3); }
     .project-body :global(.flow-step) { min-height: 0; }
     .project-body :global(.flow-step:not(:last-child)::after) { top: auto; right: 50%; bottom: calc(var(--space-3) * -.75); transform: translate(50%, 50%) rotate(90deg); }
     .project-body :global(.flow-step:nth-child(2)::after) { display: block; }

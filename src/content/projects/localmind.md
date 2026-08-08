@@ -94,32 +94,32 @@ repository: https://github.com/shaul1991/localmind
   <p class="section-intro">아래 그림은 LocalMind의 필수 구조가 아니라, 제가 현재 사용 중인 홈 서버 구성의 예시입니다. 노트북과 AI 도구가 사설 네트워크를 통해 선택한 서버에 연결되므로 기기마다 서로 다른 기억이 쌓이는 문제를 줄일 수 있습니다.</p>
 
   <figure class="architecture-map">
-    <div class="architecture-flow" role="img" aria-label="여러 기기의 AI 도구가 Tailscale과 HTTP MCP를 통해 선택한 서버의 LocalMind에 연결되고, LocalMind가 공통 개인 기록을 검색하는 흐름">
+    <div class="architecture-flow architecture-flow-compact" role="img" aria-label="여러 기기의 AI 도구가 Tailscale과 HTTP MCP를 통해 선택한 서버의 LocalMind에 연결되고, LocalMind가 공통 개인 기록을 검색하는 흐름">
       <article class="architecture-node">
-        <span>01 · AI 도구</span>
-        <h4>여러 기기</h4>
-        <p>MacBook · 홈 컴퓨터<br>Hermes · Claude · Codex</p>
+        <span>01</span>
+        <h4>AI 도구</h4>
+        <p>여러 기기<br>Hermes · Claude · Codex</p>
       </article>
       <div class="architecture-connector" aria-hidden="true"><small>요청과 응답</small><b>→</b></div>
       <article class="architecture-node">
-        <span>02 · 연결</span>
-        <h4>사설 연결 통로</h4>
-        <p>Tailscale<br>HTTP MCP</p>
+        <span>02</span>
+        <h4>HTTP MCP</h4>
+        <p>Tailscale<br>사설 연결</p>
       </article>
       <div class="architecture-connector" aria-hidden="true"><small>안전하게 전달</small><b>→</b></div>
       <article class="architecture-node architecture-node-accent">
-        <span>03 · 처리</span>
-        <h4>선택한 서버의 LocalMind</h4>
-        <p>brief · search_notes<br>capture_note · whoami</p>
+        <span>03</span>
+        <h4>LocalMind</h4>
+        <p>선택한 서버<br>네 가지 MCP 도구</p>
       </article>
       <div class="architecture-connector" aria-hidden="true"><small>검색과 기록</small><b>→</b></div>
       <article class="architecture-node">
-        <span>04 · 기억</span>
-        <h4>개인 노트와 결정</h4>
-        <p>하나의 기준점에서<br>보관하고 검색</p>
+        <span>04</span>
+        <h4>개인 기록</h4>
+        <p>노트와 결정<br>보관하고 검색</p>
       </article>
     </div>
-    <figcaption class="architecture-caption"><strong>선택적 확장 구성</strong> · 여러 기기에서 같은 기억을 공유하고 싶을 때 사용하는 방식입니다. 한 대의 기기에서 사용할 때는 사설 연결 통로와 별도 서버가 필요하지 않습니다.</figcaption>
+    <figcaption class="architecture-caption"><strong>선택적 확장 구성</strong> · 여러 기기에서 같은 기억을 공유할 때 사용합니다. 한 대의 기기에서는 별도 서버가 필요하지 않습니다.</figcaption>
   </figure>
 </section>
 
