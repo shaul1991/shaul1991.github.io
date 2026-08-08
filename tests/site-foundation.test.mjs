@@ -67,8 +67,10 @@ test('시리즈 필터는 운영 글 목록과 디자인 시스템이 같은 컴
   assert.match(component, /aria-label="시리즈 필터"/);
   assert.match(component, /min-height: 2\.75rem/);
   assert.match(component, /:focus-visible/);
-  assert.match(component, /border-bottom/);
-  assert.doesNotMatch(component, /border-radius: 99rem/);
+  assert.match(component, /padding-inline: var\(--space-3\)/);
+  assert.match(component, /border: 1px solid var\(--color-line\)/);
+  assert.match(component, /border-radius: 99rem/);
+  assert.match(component, /background: var\(--color-accent-soft\)/);
 });
 
 test('시리즈 배지는 목록·상세·디자인 시스템이 같은 스타일 컴포넌트를 사용한다', () => {
