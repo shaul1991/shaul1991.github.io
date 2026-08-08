@@ -4,10 +4,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import PostPreview from '../components/PostPreview.astro';
+import { comparePostsNewestFirst } from '../lib/post-order.mjs';
 
 const projects = (await getCollection('projects')).filter(({ data }) => data.featured);
 const posts = (await getCollection('posts'))
-  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .sort(comparePostsNewestFirst)
   .slice(0, 3);
 ---
 
