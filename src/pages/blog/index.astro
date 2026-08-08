@@ -83,4 +83,10 @@ const seriesFilters = [...new Set(posts.flatMap(({ data }) => data.series ? [dat
   .series-filter-wrap { margin-bottom: var(--space-8); }
   .post-list { border-bottom: 1px solid var(--color-line); }
   .post-item[hidden] { display: none; }
+  @media (max-width: 38rem) {
+    main { padding-top: var(--space-12); }
+    .page-header { margin-bottom: var(--space-8); }
+    h1 { margin: var(--space-2) 0 var(--space-4); }
+    .page-header > p:last-child { font-size: var(--text-base); line-height: 1.6; }
+  }
 </style>

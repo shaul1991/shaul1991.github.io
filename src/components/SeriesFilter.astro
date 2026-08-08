@@ -16,26 +16,26 @@ const statusText = selected === 'all' ? `전체 ${visibleCount}편` : `${selecte
 ---
 
 <section class="series-filter-panel" aria-label="시리즈 필터">
-  <div class="series-filters">
+  <div class="filter-heading">
     <span>시리즈</span>
+    <p data-series-status aria-live="polite">{statusText}</p>
+  </div>
+  <div class="series-filters">
     <button type="button" data-series-filter="all" aria-pressed={selected === 'all'}>전체</button>
     {seriesOptions.map((series) => (
       <button type="button" data-series-filter={series} aria-pressed={selected === series}>{series}</button>
     ))}
   </div>
-  <p data-series-status aria-live="polite">{statusText}</p>
 </section>
 
 <style lang="scss">
-  .series-filter-panel { display: flex; gap: var(--space-6); align-items: center; justify-content: space-between; padding-block: var(--space-4); border-block: 1px solid var(--color-line); }
-  .series-filters { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
-  .series-filters > span { margin-right: var(--space-2); color: var(--color-muted); font-size: var(--text-xs); font-weight: 800; letter-spacing: .08em; }
-  .series-filters button { padding: var(--space-2) var(--space-3); color: var(--color-muted); background: transparent; border: 1px solid var(--color-line); border-radius: 99rem; font: inherit; font-size: var(--text-sm); font-weight: 700; cursor: pointer; }
-  .series-filters button:hover { color: var(--color-ink); border-color: var(--color-accent); }
-  .series-filters button[aria-pressed='true'] { color: var(--color-ink); background: var(--color-accent-soft); border-color: var(--color-accent-strong); }
-  [data-series-status] { flex: 0 0 auto; margin: 0; color: var(--color-muted); font-size: var(--text-xs); }
-  @media (max-width: 38rem) {
-    .series-filter-panel { display: block; }
-    [data-series-status] { margin-top: var(--space-3); }
-  }
+  .series-filter-panel { padding-block: var(--space-3); border-block: 1px solid var(--color-line); }
+  .filter-heading { display: flex; gap: var(--space-6); align-items: baseline; justify-content: space-between; }
+  .filter-heading > span { color: var(--color-muted); font-size: var(--text-xs); font-weight: 800; letter-spacing: .08em; }
+  [data-series-status] { margin: 0; color: var(--color-muted); font-size: var(--text-xs); }
+  .series-filters { display: flex; flex-wrap: wrap; gap: 0 var(--space-5); align-items: center; margin-top: var(--space-1); }
+  .series-filters button { min-height: 2.75rem; padding: 0; color: var(--color-muted); background: transparent; border: 0; border-bottom: 2px solid transparent; font: inherit; font-size: var(--text-sm); font-weight: 700; cursor: pointer; }
+  .series-filters button:hover { color: var(--color-ink); }
+  .series-filters button[aria-pressed='true'] { color: var(--color-ink); border-bottom-color: var(--color-accent-strong); }
+  .series-filters button:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
 </style>

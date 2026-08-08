@@ -65,6 +65,23 @@ test('시리즈 필터는 운영 글 목록과 디자인 시스템이 같은 컴
   assert.match(catalog, /<SeriesFilter/);
   assert.match(catalog, /시리즈 필터와 태그/);
   assert.match(component, /aria-label="시리즈 필터"/);
+  assert.match(component, /min-height: 2\.75rem/);
+  assert.match(component, /:focus-visible/);
+  assert.match(component, /border-bottom/);
+  assert.doesNotMatch(component, /border-radius: 99rem/);
+});
+
+test('글 목록은 시리즈와 주제 태그의 위계를 분리하고 모바일 진입을 단축한다', () => {
+  const page = read('src/pages/blog/index.astro');
+  const preview = read('src/components/PostPreview.astro');
+
+  assert.match(preview, /class="topic-tag"/);
+  assert.match(preview, /\.topic-tag \{ color: var\(--color-muted\)/);
+  assert.match(preview, /\.series-tag \{[^}]*color: var\(--color-ink\)/);
+  assert.match(preview, /class="post-copy"/);
+  assert.match(page, /@media \(max-width: 38rem\)/);
+  assert.match(page, /padding-top: var\(--space-12\)/);
+  assert.match(page, /\.page-header \{ margin-bottom: var\(--space-8\)/);
 });
 
 test('글과 프로젝트 컬렉션은 실제 Markdown 콘텐츠 타입을 제공한다', () => {
