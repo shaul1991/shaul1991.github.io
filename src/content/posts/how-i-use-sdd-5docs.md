@@ -12,15 +12,15 @@ seriesOrder: 1
 
 ## 핵심
 
-| 문서 | 결정 |
-| --- | --- |
-| `goal.md` | 왜 하는가, 성공은 무엇인가 |
-| `spec.md` | 무엇을 만족해야 하는가 |
-| `plan.md` | 어떤 접근과 검증을 택하는가 |
-| `tasks.md` | 누가 무엇을 어떻게 실행하는가 |
-| `review.md` | 무엇을 만들고 검증했는가 |
-
-사람은 목표와 최종 머지를 승인한다. AI는 정해진 방향 안에서 작성·구현·검증을 이어간다.
+<figure class="process-flow process-flow--5" aria-label="goal에서 review까지 이어지는 다섯 문서 흐름">
+<ol class="process-flow">
+<li><span aria-hidden="true">🎯</span><strong>goal</strong><small>목표·성공</small></li>
+<li><span aria-hidden="true">📋</span><strong>spec</strong><small>요구·수락 조건</small></li>
+<li><span aria-hidden="true">🧭</span><strong>plan</strong><small>접근·검증</small></li>
+<li><span aria-hidden="true">⚙️</span><strong>tasks</strong><small>실행 계약</small></li>
+<li><span aria-hidden="true">✅</span><strong>review</strong><small>결과·증거</small></li>
+</ol>
+</figure>
 
 ## 적용 기준
 

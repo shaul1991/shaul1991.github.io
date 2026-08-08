@@ -13,11 +13,14 @@ seriesOrder: 2
 
 ## 핵심
 
-1. 구현을 검증 가능한 행동 단위로 나눈다.
-2. 실패를 먼저 재현하거나 완료 조건을 테스트한다.
-3. 테스트·빌드·실제 화면·CI로 결과를 확인한다.
-4. self-review에서 문제가 나오면 수정 후 다시 검증한다.
-5. 다음 판단에 필요한 내용만 LocalMind에 남긴다.
+<figure class="process-flow process-flow--4" aria-label="구현을 나누고 검증한 뒤 판단을 기록하는 흐름">
+<ol class="process-flow">
+<li><span aria-hidden="true">🧩</span><strong>나누기</strong><small>검증 가능한 행동 단위</small></li>
+<li><span aria-hidden="true">🧪</span><strong>검증</strong><small>테스트·빌드·화면·CI</small></li>
+<li><span aria-hidden="true">🔎</span><strong>재검토</strong><small>self-review 후 재검증</small></li>
+<li><span aria-hidden="true">🧠</span><strong>기록</strong><small>다음 판단에 필요한 맥락</small></li>
+</ol>
+</figure>
 
 ## 완료 증거
 

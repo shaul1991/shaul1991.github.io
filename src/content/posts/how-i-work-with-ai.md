@@ -12,10 +12,14 @@ AI는 실행한다. 목표와 최종 판단은 사람이 맡는다.
 
 ## 핵심
 
-1. 요청을 문제·범위·완료 조건으로 바꾼다.
-2. 결과를 바꿀 모호함만 먼저 확인한다.
-3. 작업 크기에 맞게 조사와 계획의 깊이를 정한다.
-4. AI가 실행하고 사람이 최종 결정한다.
+<figure class="process-flow process-flow--4" aria-label="요청을 정의하고 AI가 실행한 뒤 사람이 최종 결정하는 흐름">
+<ol class="process-flow">
+<li><span aria-hidden="true">🧭</span><strong>정의</strong><small>문제·범위·완료 조건</small></li>
+<li><span aria-hidden="true">❓</span><strong>확인</strong><small>결과를 바꿀 모호함</small></li>
+<li><span aria-hidden="true">⚙️</span><strong>실행</strong><small>작업 크기에 맞게 조사·검증</small></li>
+<li><span aria-hidden="true">✅</span><strong>결정</strong><small>사람이 최종 반영</small></li>
+</ol>
+</figure>
 
 ## 판단 기준
 
