@@ -147,8 +147,9 @@ test('공용 사이트 푸터는 짧은 페이지를 마감하고 디자인 시�
   assert.doesNotMatch(footer, /background: var\(--color-surface-raised\)/);
   assert.match(layout, /import SiteFooter from/);
   assert.match(layout, /<slot \/>\s*<SiteFooter \/>/);
-  assert.match(layout, /min-height: 100svh/);
-  assert.match(layout, /:global\(main\) \{ flex: 1; \}/);
+  assert.match(layout, /<body>\s*<slot \/>\s*<SiteFooter \/>\s*<\/body>/);
+  assert.doesNotMatch(layout, /min-height: 100svh/);
+  assert.doesNotMatch(layout, /site-shell/);
   assert.match(catalog, /import SiteFooter from/);
   assert.match(catalog, /<SiteFooter \/>/);
   assert.doesNotMatch(home, /<footer class="container">/);
