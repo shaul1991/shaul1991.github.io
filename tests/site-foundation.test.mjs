@@ -91,28 +91,39 @@ test('운영 페이지는 CSS를 HTML에 포함해 배포 직후에도 스타일
 });
 
 test('실제 글과 LocalMind 프로젝트만 콘텐츠 컬렉션에 남는다', () => {
-  const posts = readdirSync(new URL('../src/content/posts', import.meta.url)).filter((name) => /\.mdx?$/.test(name));
+  const posts = readdirSync(new URL('../src/content/posts', import.meta.url)).filter((name) => /\.mdx?$/.test(name)).sort();
   const projects = readdirSync(new URL('../src/content/projects', import.meta.url)).filter((name) => /\.mdx?$/.test(name));
 
-  assert.deepEqual(posts, ['how-i-work-with-ai.md']);
+  assert.deepEqual(posts, ['how-i-finish-and-record-work.md', 'how-i-work-with-ai.md']);
   assert.deepEqual(projects, ['localmind.md']);
   assert.equal(existsSync(new URL('../src/pages/blog/[...slug].astro', import.meta.url)), true);
 });
 
 test('첫 글은 LocalMind 기록에 근거한 작업 흐름과 의사결정 방식을 설명한다', () => {
-  const post = read('src/content/posts/how-i-work-with-ai.md');
+  const firstPost = read('src/content/posts/how-i-work-with-ai.md');
+  const secondPost = read('src/content/posts/how-i-finish-and-record-work.md');
+  const post = `${firstPost}\n${secondPost}`;
   const collections = read('src/content.config.ts');
   const blogIndex = read('src/pages/blog/index.astro');
   const blogDetail = read('src/pages/blog/[...slug].astro');
   const home = read('src/pages/index.astro');
 
-  assert.match(post, /AI와 함께 일할 때/);
+  assert.match(post, /AI에게 맡길 일과 내가 결정할 일/);
   assert.match(post, /완료 조건/);
   assert.match(post, /작업 크기에 맞게/);
   assert.match(post, /트레이드오프/);
   assert.match(post, /self-review/);
   assert.match(post, /사람이 최종 결정/);
   assert.match(post, /LocalMind/);
+  assert.match(firstPost, /## 핵심부터/);
+  assert.match(secondPost, /## 핵심부터/);
+  assert.match(firstPost, /seriesOrder: 1/);
+  assert.match(secondPost, /seriesOrder: 2/);
+  for (const content of [firstPost, secondPost]) {
+    const body = content.split('---').at(-1).replace(/\s/g, '');
+    assert.ok(body.length <= 2000, `글 한 편은 3~4분 분량이어야 합니다: ${body.length}자`);
+  }
+  assert.match(collections, /series: z\.string\(\)\.optional/);
   assert.match(collections, /const posts = defineCollection/);
   assert.match(blogIndex, /getCollection\('posts'\)/);
   assert.match(blogDetail, /getCollection\('posts'\)/);

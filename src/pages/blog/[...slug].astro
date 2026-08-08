@@ -21,6 +21,17 @@ const contextGroups = [{
     .filter(({ depth }) => depth === 2)
     .map(({ slug, text }) => ({ href: `#${slug}`, label: text })),
 }];
+const seriesPosts = post.data.series
+  ? (await getCollection('posts'))
+      .filter(({ data }) => data.series === post.data.series)
+      .sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0))
+  : [];
+const seriesIndex = seriesPosts.findIndex(({ id }) => id === post.id);
+const previousPost = seriesIndex > 0 ? seriesPosts[seriesIndex - 1] : undefined;
+const nextPost = seriesIndex >= 0 ? seriesPosts[seriesIndex + 1] : undefined;
+const seriesLabel = post.data.series && post.data.seriesOrder
+  ? `${post.data.series} ${post.data.seriesOrder}/${seriesPosts.length}`
+  : '작업 방식';
 ---
 
 <BaseLayout title={`${post.data.title} — Shaul Kim`} description={post.data.description}>
@@ -29,13 +40,23 @@ const contextGroups = [{
     <article>
       <header class="article-header container">
         <a class="back-link" href="/blog">← 글 목록</a>
-        <p class="eyebrow">작업 방식 · {publishedAt}</p>
+        <p class="eyebrow">{seriesLabel} · {publishedAt}</p>
         <h1>{post.data.title}</h1>
         <p class="lead">{post.data.description}</p>
         <div class="tags" aria-label="글 태그">{post.data.tags.map((tag) => <span>#{tag}</span>)}</div>
       </header>
       <div class="article-shell container">
         <div class="article-body"><Content /></div>
+        {(previousPost || nextPost) && (
+          <nav class="series-nav" aria-label="시리즈 글 이동">
+            {previousPost
+              ? <a href={`/blog/${previousPost.id}`}><small>이전 글</small><strong>{previousPost.data.title}</strong></a>
+              : <span></span>}
+            {nextPost
+              ? <a class="next" href={`/blog/${nextPost.id}`}><small>다음 글</small><strong>{nextPost.data.title}</strong></a>
+              : <span></span>}
+          </nav>
+        )}
       </div>
     </article>
   </main>
@@ -59,6 +80,11 @@ const contextGroups = [{
   .article-body :global(strong) { color: var(--color-ink); }
   .article-body :global(pre) { overflow-x: auto; padding: var(--space-6); margin: var(--space-10) 0; color: var(--color-ink); background: var(--color-surface-raised); border: 1px solid var(--color-line); border-radius: var(--radius-md); font-size: var(--text-sm); line-height: 1.8; }
   .article-body :global(code) { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .series-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); max-width: 50rem; padding-bottom: var(--space-20); margin-inline: auto; }
+  .series-nav a { display: grid; gap: var(--space-2); min-width: 0; padding: var(--space-5); background: var(--color-surface-raised); border: 1px solid var(--color-line); border-radius: var(--radius-md); text-decoration: none; }
+  .series-nav small { color: var(--color-accent-strong); font-size: var(--text-xs); font-weight: 800; }
+  .series-nav strong { overflow-wrap: anywhere; font-family: var(--font-display); font-size: var(--text-lg); font-weight: 400; line-height: 1.25; }
+  .series-nav .next { text-align: right; }
   .article-footer { padding-block: 0 var(--space-24); }
   .article-footer a { font-weight: 800; }
   @media (max-width: 38rem) {
@@ -66,5 +92,7 @@ const contextGroups = [{
     .article-body { padding-block: var(--space-12) var(--space-20); }
     .article-body :global(h2) { margin-top: var(--space-16); }
     .article-body :global(pre) { padding: var(--space-4); font-size: var(--text-xs); }
+    .series-nav { grid-template-columns: 1fr; }
+    .series-nav .next { text-align: left; }
   }
 </style>
