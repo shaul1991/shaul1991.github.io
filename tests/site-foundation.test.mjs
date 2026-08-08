@@ -24,6 +24,82 @@ test('홈 페이지는 실제 프로젝트와 최근 글을 보여준다', () =>
   assert.doesNotMatch(page, /아직 공개한 글이 없습니다/);
 });
 
+test('글 목록은 최신 글부터 정렬하고 시리즈 순서를 유지한다', async () => {
+  const { comparePostsNewestFirst } = await import('../src/lib/post-order.mjs');
+  const posts = [
+    { id: 'workflow-1', data: { publishedAt: new Date('2026-08-08'), series: '나의 작업 흐름', seriesOrder: 1 } },
+    { id: 'sdd-1', data: { publishedAt: new Date('2026-08-08'), series: 'sdd-5docs', seriesOrder: 1 } },
+    { id: 'sdd-6', data: { publishedAt: new Date('2026-08-08'), series: 'sdd-5docs', seriesOrder: 6 } },
+    { id: 'workflow-2', data: { publishedAt: new Date('2026-08-08'), series: '나의 작업 흐름', seriesOrder: 2 } },
+    { id: 'newest', data: { publishedAt: new Date('2026-08-09') } },
+  ];
+
+  assert.deepEqual(posts.sort(comparePostsNewestFirst).map(({ id }) => id), [
+    'newest',
+    'sdd-6',
+    'sdd-1',
+    'workflow-2',
+    'workflow-1',
+  ]);
+});
+
+test('글 목록은 시리즈 필터와 시리즈 태그를 제공한다', () => {
+  const page = read('src/pages/blog/index.astro');
+  const filter = read('src/components/SeriesFilter.astro');
+  const preview = read('src/components/PostPreview.astro');
+
+  assert.match(filter, /aria-label="시리즈 필터"/);
+  assert.match(filter, /data-series-filter/);
+  assert.match(filter, /aria-pressed/);
+  assert.match(page, /URLSearchParams/);
+  assert.match(page, /data-series=/);
+  assert.match(preview, /<SeriesBadge label=\{series\}/);
+});
+
+test('시리즈 필터는 운영 글 목록과 디자인 시스템이 같은 컴포넌트를 사용한다', () => {
+  const page = read('src/pages/blog/index.astro');
+  const catalog = read('src/pages/design-system.astro');
+  const component = read('src/components/SeriesFilter.astro');
+
+  assert.match(page, /<SeriesFilter/);
+  assert.match(catalog, /<SeriesFilter/);
+  assert.match(catalog, /시리즈 필터와 태그/);
+  assert.match(component, /aria-label="시리즈 필터"/);
+  assert.match(component, /min-height: 2\.75rem/);
+  assert.match(component, /:focus-visible/);
+  assert.match(component, /border-bottom/);
+  assert.doesNotMatch(component, /border-radius: 99rem/);
+});
+
+test('시리즈 배지는 목록·상세·디자인 시스템이 같은 스타일 컴포넌트를 사용한다', () => {
+  const badge = read('src/components/SeriesBadge.astro');
+  const preview = read('src/components/PostPreview.astro');
+  const article = read('src/pages/blog/[...slug].astro');
+  const catalog = read('src/pages/design-system.astro');
+
+  assert.match(badge, /class="series-badge"/);
+  assert.match(badge, /background: var\(--color-accent-soft\)/);
+  assert.match(badge, /border: 1px solid var\(--color-accent-strong\)/);
+  assert.match(badge, /border-radius: 99rem/);
+  assert.match(preview, /<SeriesBadge/);
+  assert.match(article, /<SeriesBadge/);
+  assert.match(catalog, /<SeriesBadge label="sdd-5docs"/);
+  assert.match(catalog, /시리즈 배지/);
+});
+
+test('글 목록은 시리즈와 주제 태그의 위계를 분리하고 모바일 진입을 단축한다', () => {
+  const page = read('src/pages/blog/index.astro');
+  const preview = read('src/components/PostPreview.astro');
+
+  assert.match(preview, /class="topic-tag"/);
+  assert.match(preview, /\.topic-tag \{ color: var\(--color-muted\)/);
+  assert.match(preview, /<SeriesBadge/);
+  assert.match(preview, /class="post-copy"/);
+  assert.match(page, /@media \(max-width: 38rem\)/);
+  assert.match(page, /padding-top: var\(--space-12\)/);
+  assert.match(page, /\.page-header \{ margin-bottom: var\(--space-8\)/);
+});
+
 test('글과 프로젝트 컬렉션은 실제 Markdown 콘텐츠 타입을 제공한다', () => {
   const config = read('src/content.config.ts');
 

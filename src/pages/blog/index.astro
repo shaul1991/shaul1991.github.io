@@ -3,10 +3,12 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import PostPreview from '../../components/PostPreview.astro';
+import SeriesFilter from '../../components/SeriesFilter.astro';
+import { comparePostsNewestFirst } from '../../lib/post-order.mjs';
 
-const posts = (await getCollection('posts')).sort(
-  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
-);
+const posts = (await getCollection('posts')).sort(comparePostsNewestFirst);
+const seriesFilters = [...new Set(posts.flatMap(({ data }) => data.series ? [data.series] : []))]
+  .sort((a, b) => a.localeCompare(b, 'ko'));
 ---
 
 <BaseLayout title="글 — Shaul Kim" description="실제 작업과 의사결정에서 얻은 내용을 기록합니다.">
@@ -17,15 +19,74 @@ const posts = (await getCollection('posts')).sort(
       <h1>글</h1>
       <p>프로젝트를 만들고 AI와 협업하면서 실제로 바뀐 생각과 작업 방식을 기록합니다.</p>
     </header>
+
+    <div class="series-filter-wrap">
+      <SeriesFilter seriesOptions={seriesFilters} totalCount={posts.length} />
+    </div>
+
     <div class="post-list">
-      {posts.map(({ data, id }) => <PostPreview {...data} slug={id} />)}
+      {posts.map(({ data, id }) => (
+        <div class="post-item" data-series={data.series ?? ''}>
+          <PostPreview {...data} slug={id} />
+        </div>
+      ))}
     </div>
   </main>
 </BaseLayout>
 
+<script>
+  const filterButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-series-filter]')];
+  const postItems = [...document.querySelectorAll<HTMLElement>('[data-series]')];
+  const status = document.querySelector<HTMLElement>('[data-series-status]');
+
+  const applySeriesFilter = (series: string, updateUrl = true) => {
+    const selected = filterButtons.some((button) => button.dataset.seriesFilter === series) ? series : 'all';
+    let visibleCount = 0;
+
+    filterButtons.forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.seriesFilter === selected));
+    });
+
+    postItems.forEach((item) => {
+      const visible = selected === 'all' || item.dataset.series === selected;
+      item.hidden = !visible;
+      if (visible) visibleCount += 1;
+    });
+
+    if (status) status.textContent = selected === 'all' ? `전체 ${visibleCount}편` : `${selected} 시리즈 ${visibleCount}편`;
+
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      if (selected === 'all') url.searchParams.delete('series');
+      else url.searchParams.set('series', selected);
+      window.history.pushState({}, '', url);
+    }
+  };
+
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => applySeriesFilter(button.dataset.seriesFilter ?? 'all'));
+  });
+
+  const applyFilterFromUrl = () => {
+    const selected = new URLSearchParams(window.location.search).get('series') ?? 'all';
+    applySeriesFilter(selected, false);
+  };
+
+  window.addEventListener('popstate', applyFilterFromUrl);
+  applyFilterFromUrl();
+</script>
+
 <style lang="scss">
-  .page-header { max-width: 50rem; margin-bottom: var(--space-16); }
+  .page-header { max-width: 50rem; margin-bottom: var(--space-12); }
   h1 { margin: var(--space-3) 0 var(--space-6); font-family: var(--font-display); font-size: var(--text-display); font-weight: 400; letter-spacing: -.04em; }
   .page-header > p:last-child { max-width: 42rem; margin: 0; color: var(--color-muted); font-size: var(--text-lg); line-height: 1.7; }
+  .series-filter-wrap { margin-bottom: var(--space-8); }
   .post-list { border-bottom: 1px solid var(--color-line); }
+  .post-item[hidden] { display: none; }
+  @media (max-width: 38rem) {
+    main { padding-top: var(--space-12); }
+    .page-header { margin-bottom: var(--space-8); }
+    h1 { margin: var(--space-2) 0 var(--space-4); }
+    .page-header > p:last-child { font-size: var(--text-base); line-height: 1.6; }
+  }
 </style>

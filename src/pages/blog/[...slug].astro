@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import ArticleNavigation from '../../components/ArticleNavigation.astro';
+import SeriesBadge from '../../components/SeriesBadge.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -30,9 +31,9 @@ const seriesPosts = post.data.series
 const seriesIndex = seriesPosts.findIndex(({ id }) => id === post.id);
 const previousPost = seriesIndex > 0 ? seriesPosts[seriesIndex - 1] : undefined;
 const nextPost = seriesIndex >= 0 ? seriesPosts[seriesIndex + 1] : undefined;
-const seriesLabel = post.data.series && post.data.seriesOrder
-  ? `${post.data.series} ${post.data.seriesOrder}/${seriesPosts.length}`
-  : '작업 방식';
+const seriesPosition = post.data.series && post.data.seriesOrder
+  ? `${post.data.seriesOrder}/${seriesPosts.length}`
+  : undefined;
 ---
 
 <BaseLayout title={`${post.data.title} — Shaul Kim`} description={post.data.description}>
@@ -41,7 +42,10 @@ const seriesLabel = post.data.series && post.data.seriesOrder
     <article>
       <header class="article-header container">
         <a class="back-link" href="/blog">← 글 목록</a>
-        <p class="eyebrow">{seriesLabel} · {publishedAt}</p>
+        <div class="article-meta" aria-label="글 정보">
+          {post.data.series ? <SeriesBadge label={post.data.series} position={seriesPosition} /> : <span>작업 방식</span>}
+          <span>{publishedAt}</span>
+        </div>
         <h1>{post.data.title}</h1>
         <p class="lead">{post.data.description}</p>
         <div class="tags" aria-label="글 태그">{post.data.tags.map((tag) => <span>#{tag}</span>)}</div>
@@ -60,6 +64,7 @@ const seriesLabel = post.data.series && post.data.seriesOrder
 <style lang="scss">
   .article-header { max-width: 64rem; padding-block: clamp(5rem, 12vw, 9rem) var(--space-16); }
   .back-link { display: inline-block; margin-bottom: var(--space-12); color: var(--color-muted); font-size: var(--text-sm); font-weight: 800; text-decoration: none; }
+  .article-meta { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; color: var(--color-muted); font-size: var(--text-xs); font-weight: 700; }
   h1 { max-width: 58rem; margin: var(--space-4) 0 0; font-family: var(--font-display); font-size: clamp(3rem, 8vw, 6.75rem); font-weight: 400; letter-spacing: -.055em; line-height: .96; }
   .lead { max-width: 46rem; margin: var(--space-8) 0 0; color: var(--color-muted); font-size: var(--text-lg); line-height: 1.75; }
   .tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-8); color: var(--color-accent-strong); font-size: var(--text-xs); font-weight: 800; }
