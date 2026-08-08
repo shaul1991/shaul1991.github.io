@@ -121,6 +121,18 @@ const contextGroups = [
             <div class="button-row"><a class="button primary" href="#components">주요 행동</a><a class="button secondary" href="#components">보조 행동</a><a class="text-link" href="#components">텍스트 링크 →</a></div>
           </div>
           <div class="component-block">
+            <div class="component-title"><div><h3>본문 표</h3><p>헤더와 모든 셀의 경계를 강한 선으로 구분하고, 모바일에서는 고정된 열 너비와 작은 셀 여백으로 비교 구조를 유지합니다.</p></div><code>전역 본문 표 패턴</code></div>
+            <div class="content-table-demo">
+              <table>
+                <thead><tr><th>영역</th><th>확인할 증거</th><th>이유</th></tr></thead>
+                <tbody>
+                  <tr><td>코드</td><td>테스트, 타입 검사, 빌드</td><td>의도하지 않은 변경을 찾는다</td></tr>
+                  <tr><td>화면</td><td>모바일·데스크톱 렌더링</td><td>잘림과 오버플로를 확인한다</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="component-block">
             <div class="component-title"><div><h3>프로젝트 카드</h3><p>프로젝트의 시각 요소, 설명, 연도, 기술을 묶습니다.</p></div><code>ProjectCard.astro</code></div>
             <ProjectCard title="LocalMind" summary="AI가 이전 결정의 맥락을 이어받도록 돕는 개인 지식 시스템입니다." year="2026" stack={['Python', 'MCP', 'Semantic Search']} href="/projects/localmind" />
           </div>

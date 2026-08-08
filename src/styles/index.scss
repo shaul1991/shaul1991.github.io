@@ -16,6 +16,41 @@ a { color: inherit; text-decoration-thickness: 0.08em; text-underline-offset: 0.
 a:hover { color: var(--color-accent-strong); }
 button { font: inherit; }
 img { display: block; max-width: 100%; }
+.article-body table,
+.content-table-demo table {
+  width: 100%;
+  margin: var(--space-8) 0 var(--space-12);
+  color: var(--color-ink);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-line-strong);
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: clamp(var(--text-sm), 1.2vw, var(--text-base));
+  line-height: 1.6;
+}
+.article-body :is(th, td),
+.content-table-demo :is(th, td) {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-line-strong);
+  overflow-wrap: anywhere;
+  text-align: left;
+  vertical-align: top;
+}
+.article-body th,
+.content-table-demo th {
+  background: color-mix(in srgb, var(--color-line) 35%, var(--color-surface-raised));
+  font-weight: 800;
+}
+.article-body tbody tr:nth-child(even),
+.content-table-demo tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--color-line) 14%, transparent);
+}
+@media (max-width: 38rem) {
+  .article-body table,
+  .content-table-demo table { font-size: var(--text-sm); }
+  .article-body :is(th, td),
+  .content-table-demo :is(th, td) { padding: var(--space-3) var(--space-2); }
+}
 .container { width: min(calc(100% - 2rem), var(--max-width)); margin-inline: auto; }
 .eyebrow { margin: 0 0 var(--space-3); color: var(--color-accent-strong); font-size: var(--text-xs); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .section { padding-block: var(--space-24); }
