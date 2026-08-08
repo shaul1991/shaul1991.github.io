@@ -35,9 +35,14 @@ const contextGroups = [
         <p class="summary">{project.data.summary}</p>
         <div class="project-facts" aria-label="프로젝트 정보">
           <span>직접 사용하며 개선 중</span>
-          <span>개인 지식 시스템</span>
+          <span>단일 기기 · 선택적 서버</span>
           <span>2026년 시작</span>
         </div>
+        {project.data.repository && (
+          <a class="source-link" href={project.data.repository} rel="external" aria-label={`${project.data.title} GitHub 저장소 열기`}>
+            GitHub에서 프로젝트 소스 보기 <span aria-hidden="true">↗</span>
+          </a>
+        )}
       </div>
       <div class="hero-visual" aria-hidden="true">
         <span class="orbit orbit-one"></span>
@@ -65,6 +70,8 @@ const contextGroups = [
   .summary { max-width: 42rem; margin: var(--space-8) 0 0; color: var(--color-muted); font-size: var(--text-lg); }
   .project-facts { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-8); }
   .project-facts span { padding: .35rem .75rem; background: var(--color-surface-raised); border: 1px solid var(--color-line); border-radius: 99rem; color: var(--color-muted); font-size: var(--text-xs); font-weight: 700; }
+  .source-link { display: inline-flex; gap: var(--space-2); align-items: center; padding: .8rem 1.1rem; margin-top: var(--space-6); color: var(--color-surface); background: var(--color-ink); border-radius: 99rem; font-size: var(--text-sm); font-weight: 800; text-decoration: none; }
+  .source-link:hover { color: var(--color-surface); transform: translateY(-1px); }
   .hero-visual { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--color-accent-soft); border: 1px solid var(--color-line); border-radius: 50%; }
   .orbit { position: absolute; inset: 15%; border: 1px solid var(--color-accent); border-radius: 50%; }
   .orbit-two { inset: 30%; border-style: dashed; }
@@ -95,6 +102,22 @@ const contextGroups = [
   .project-body :global(.flow-step::before) { content: '0' counter(flow); display: block; margin-bottom: var(--space-8); color: var(--color-accent-strong); font-size: var(--text-xs); font-weight: 800; }
   .project-body :global(.flow-step:not(:last-child)::after) { content: '→'; position: absolute; z-index: 1; top: 50%; right: calc(var(--space-3) * -.75); transform: translate(50%, -50%); color: var(--color-accent-strong); font-weight: 800; }
   .project-body :global(.flow-step p) { margin: var(--space-3) 0 0; color: var(--color-muted); font-size: var(--text-sm); }
+  .project-body :global(.expansion-path) { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: var(--space-4); align-items: center; margin-top: var(--space-10, 2.5rem); padding: var(--space-5); background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-lg); }
+  .project-body :global(.expansion-step) { display: grid; gap: var(--space-2); padding: var(--space-4); background: var(--color-surface-raised); border: 1px solid var(--color-line); border-radius: var(--radius-md); }
+  .project-body :global(.expansion-step span), .project-body :global(.expansion-step small) { color: var(--color-muted); font-size: var(--text-xs); }
+  .project-body :global(.expansion-step strong) { color: var(--color-ink); }
+  .project-body :global(.expansion-arrow) { color: var(--color-accent-strong); font-size: var(--text-xs); text-align: center; white-space: nowrap; }
+  .project-body :global(.expansion-note) { margin: var(--space-4) 0 0; color: var(--color-muted); }
+  .project-body :global(.expansion-note strong) { color: var(--color-ink); }
+  .project-body :global(.deployment-modes) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin-top: var(--space-10, 2.5rem); }
+  .project-body :global(.deployment-mode) { padding: var(--space-6); background: var(--color-surface-raised); border: 1px solid var(--color-line); border-radius: var(--radius-lg); }
+  .project-body :global(.deployment-mode.local-mode) { border-color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent-soft); }
+  .project-body :global(.mode-badge) { display: inline-block; margin-bottom: var(--space-4); color: var(--color-accent-strong); font-size: var(--text-xs); font-weight: 800; letter-spacing: .06em; }
+  .project-body :global(.deployment-mode p) { margin: var(--space-3) 0 0; color: var(--color-muted); }
+  .project-body :global(.mode-flow) { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); gap: var(--space-2); align-items: center; margin-top: var(--space-6); }
+  .project-body :global(.mode-flow span) { padding: var(--space-2); background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-sm); font-size: var(--text-xs); font-weight: 700; text-align: center; }
+  .project-body :global(.mode-flow b) { color: var(--color-accent-strong); }
+  .project-body :global(.architecture-subtitle) { margin-top: var(--space-16); font-size: clamp(1.5rem, 1.2rem + 1.3vw, 2.25rem); }
   .project-body :global(.architecture-map) { overflow: hidden; margin-top: var(--space-10, 2.5rem); background: #08111f; border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent); border-radius: var(--radius-lg); }
   .project-body :global(.architecture-map svg) { display: block; width: 100%; height: auto; }
   .project-body :global(.architecture-caption) { padding: var(--space-4) var(--space-6); margin: 0; color: #aab7ca; background: #0d1727; font-size: var(--text-sm); }
@@ -120,7 +143,10 @@ const contextGroups = [
     .project-body :global(.story-section) { padding-block: var(--space-12); }
     .project-body :global(.before-after) { grid-template-columns: 1fr; }
     .project-body :global(.comparison-arrow) { transform: rotate(90deg); }
-    .project-body :global(.project-flow), .project-body :global(.tool-grid), .project-body :global(.value-grid) { grid-template-columns: 1fr; }
+    .project-body :global(.project-flow), .project-body :global(.tool-grid), .project-body :global(.value-grid), .project-body :global(.deployment-modes), .project-body :global(.expansion-path) { grid-template-columns: 1fr; }
+    .project-body :global(.expansion-path) { padding: var(--space-4); }
+    .project-body :global(.expansion-arrow) { font-size: 0; white-space: normal; }
+    .project-body :global(.expansion-arrow::after) { content: '필요할 때 확장 ↓'; font-size: var(--text-xs); }
     .project-body :global(.flow-step) { min-height: 0; }
     .project-body :global(.flow-step:not(:last-child)::after) { top: auto; right: 50%; bottom: calc(var(--space-3) * -.75); transform: translate(50%, 50%) rotate(90deg); }
     .project-body :global(.flow-step:nth-child(2)::after) { display: block; }
