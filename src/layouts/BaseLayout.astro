@@ -18,14 +18,7 @@ const { title, description = 'Shaul Kim — 개발하고, 만들고, 꾸준히 �
     </script>
   </head>
   <body>
-    <div class="site-shell">
-      <slot />
-      <SiteFooter />
-    </div>
+    <slot />
+    <SiteFooter />
   </body>
 </html>
-
-<style>
-  .site-shell { display: flex; min-height: 100svh; flex-direction: column; }
-  .site-shell > :global(main) { flex: 1; }
-</style>
