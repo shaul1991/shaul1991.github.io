@@ -127,6 +127,9 @@ test('첫 글은 LocalMind 기록에 근거한 작업 흐름과 의사결정 방
   assert.match(collections, /const posts = defineCollection/);
   assert.match(blogIndex, /getCollection\('posts'\)/);
   assert.match(blogDetail, /getCollection\('posts'\)/);
+  assert.match(blogDetail, /@media \(max-width: 38rem\)[\s\S]+\.series-nav a \{[^}]*padding: var\(--space-4\)/);
+  assert.match(blogDetail, /@media \(max-width: 38rem\)[\s\S]+\.series-nav strong \{[^}]*font-size: var\(--text-base\)/);
+  assert.match(blogDetail, /\.article-footer \{[^}]*border-top: 1px solid var\(--color-line\)/);
   assert.match(home, /getCollection\('posts'\)/);
   assert.doesNotMatch(blogIndex, /아직 공개한 글이 없습니다/);
 });
