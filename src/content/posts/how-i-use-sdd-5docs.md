@@ -2,19 +2,20 @@
 title: 'sdd-5docs 1: 다섯 문서로 AI 작업의 기준을 유지한다'
 description: 목표, 요구, 접근, 실행, 완료 증거를 분리해 긴 AI 작업의 해석 차이를 줄인다.
 publishedAt: 2026-08-08
+updatedAt: 2026-08-09
 tags: [작업 흐름, SDD, AI 위임]
 featured: true
 series: sdd-5docs
 seriesOrder: 1
 editor: 한결
-editorReview: 2026-08-08-series-consolidation
+editorReview: 2026-08-09-localmind-revalidation
 ---
 
 나는 실제로 영향 범위가 큰 AI 작업에만 `sdd-5docs`를 사용한다.
 
 ## 핵심
 
-<figure class="process-flow process-flow--5" aria-label="goal에서 review까지 이어지는 다섯 문서 흐름">
+<figure class="process-flow process-flow--5" aria-label="goal에서 review까지 이어지는 다섯 문서의 참조 순서">
 <ol class="process-flow">
 <li><span aria-hidden="true">🎯</span><strong>goal</strong><small>목표·성공</small></li>
 <li><span aria-hidden="true">📋</span><strong>spec</strong><small>요구·수락 조건</small></li>
@@ -26,7 +27,11 @@ editorReview: 2026-08-08-series-consolidation
 
 문서를 나누면 목표 변경과 구현 변경을 구분할 수 있다. 각 단계의 문서는 다음 단계가 다시 참조할 판단 기준을 제공한다.
 
+이 그림은 다섯 문서의 참조 순서다. 실제 실행에서는 `tasks.md` 뒤에 구현과 독립 self-review가 진행되고, 그 결과와 증거를 `review.md`에 기록한다.
+
 ## 적용 기준
+
+`sdd-5docs`가 모든 작업의 첫 단계인 것은 아니다. 신규 프로젝트나 넓은 기능은 조사·벤치마킹 또는 작업 성격별 intake를 먼저 거쳐 방향 입력을 준비할 수 있다.
 
 | 사용한다 | 사용하지 않는다 |
 | --- | --- |
