@@ -233,11 +233,17 @@ test('실제 글과 실제 프로젝트만 콘텐츠 컬렉션에 남는다', ()
   const projects = readdirSync(new URL('../src/content/projects', import.meta.url)).filter((name) => /\.mdx?$/.test(name)).sort();
 
   assert.deepEqual(posts, [
+    'agent-permission-boundaries.md',
+    'ai-memory-outside-model.md',
+    'central-knowledge-local-execution.md',
+    'decision-records.md',
+    'hermes-localmind-lifecycle.md',
     'how-i-finish-and-record-work.md',
     'how-i-use-sdd-5docs.md',
     'how-i-work-with-ai.md',
     'sdd-5docs-design.md',
     'sdd-5docs-execution.md',
+    'verification-checklist.md',
   ]);
   assert.deepEqual(projects, ['localmind-addons.md', 'localmind.md']);
   assert.equal(existsSync(new URL('../src/pages/blog/[...slug].astro', import.meta.url)), true);
@@ -270,6 +276,33 @@ test('모든 글은 핵심과 실행 기준을 짧게 제시한다', () => {
   assert.match(article, /\.process-flow ol\)[\s\S]+grid-template-columns: repeat\(4, minmax\(0, 1fr\)\)/);
   assert.match(article, /\.process-flow--5 ol\)[\s\S]+grid-template-columns: repeat\(5, minmax\(0, 1fr\)\)/);
   assert.match(article, /@media \(max-width: 38rem\)[\s\S]+\.process-flow ol/);
+});
+
+test('기억이 이어지는 개인 AI는 여섯 편이 독립된 질문과 공통 원칙을 설명한다', () => {
+  const filenames = [
+    'ai-memory-outside-model.md',
+    'decision-records.md',
+    'hermes-localmind-lifecycle.md',
+    'central-knowledge-local-execution.md',
+    'agent-permission-boundaries.md',
+    'verification-checklist.md',
+  ];
+  const posts = filenames.map((filename) => read(`src/content/posts/${filename}`));
+
+  posts.forEach((post, index) => {
+    assert.match(post, /series: 기억이 이어지는 개인 AI/);
+    assert.match(post, new RegExp(`seriesOrder: ${index + 1}`));
+    assert.match(post, /LocalMind/);
+    assert.match(post, /Hermes/);
+    assert.match(post, /## 핵심\n/);
+  });
+
+  assert.match(posts[0], /기억의 정본은 모델 밖/);
+  assert.match(posts[1], /선택[\s\S]+이유[\s\S]+전제/);
+  assert.match(posts[2], /whoami[\s\S]+brief[\s\S]+search_notes[\s\S]+capture_note/);
+  assert.match(posts[3], /지식은 중앙에 두고 실행은 저장소가 있는 기기/);
+  assert.match(posts[4], /원격 접근은 사용자가 허용한 범위/);
+  assert.match(posts[5], /성공 문구가 아니라 파일, 테스트, 화면과 diff/);
 });
 
 test('블로그 본문 표는 모바일에서도 셀 경계와 열 너비를 구분한다', () => {
