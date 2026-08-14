@@ -39,7 +39,7 @@ hermes gateway status --deep
 `profile list`에 기존 프로필과 새 프로필이 서로 다른 alias·gateway 상태로 나오는지 확인한다. 이 홈서버는 default 프로필이 기존 개인 비서를, 새 프로필이 부부용 비서를 맡는 구조였다. 두 프로필 모두 `running` 상태였고 별도 PID로 떠 있었다.
 
 ```bash
-hermes -p <새-프로필> profile show
+hermes -p failmy_bot profile show
 ```
 
 `Model`, `Gateway`, `Skills` 개수, `.env`/`SOUL.md` 존재 여부가 기존 프로필과 독립적으로 표시된다.[1][5]
@@ -47,8 +47,8 @@ hermes -p <새-프로필> profile show
 ## 2. Telegram 봇과 대상 범위를 새로 정한다
 
 ```bash
-hermes -p <새-프로필> config set telegram.allowed_chats "<chat-id>"
-hermes -p <새-프로필> config set telegram.group_allowed_chats "<chat-id>"
+hermes -p failmy_bot config set telegram.allowed_chats "<chat-id>"
+hermes -p failmy_bot config set telegram.group_allowed_chats "<chat-id>"
 ```
 
 1:1 DM만 필요하면 `allowed_chats`만 설정한다. 그룹 챗에서 함께 쓰려면 `group_allowed_chats`에도 같은 chat ID를 등록해야 그룹 메시지를 처리한다. 이 홈서버에서는 두 값을 같은 그룹 chat ID로 맞춰 부부가 한 그룹에서 함께 비서를 쓸 수 있게 했다.
@@ -56,7 +56,7 @@ hermes -p <새-프로필> config set telegram.group_allowed_chats "<chat-id>"
 봇 token은 기존 비서와 다른 봇을 새로 만들어 발급받고, 새 프로필의 `.env`에만 넣는다. 같은 token을 두 프로필에서 동시에 쓰면 두 poller가 충돌한다.[3]
 
 ```bash
-hermes -p <새-프로필> mcp list
+hermes -p failmy_bot mcp list
 ```
 
 새 프로필은 LocalMind 같은 외부 MCP도 기존 프로필과 별개로 시작한다. 이 홈서버의 새 프로필은 확인 시점에 `No MCP servers configured` 상태였다. 필요하면 별도로 `hermes mcp add`한다.
@@ -64,13 +64,13 @@ hermes -p <새-프로필> mcp list
 ## 3. Gateway와 모델을 검증한다
 
 ```bash
-hermes -p <새-프로필> gateway status --deep
+hermes -p failmy_bot gateway status --deep
 ```
 
 `Active: active (running)`, 최근 heartbeat, 단일 프로세스가 확인돼야 한다. 이 홈서버의 새 프로필 게이트웨이는 systemd 하나의 unit이 여러 프로필 프로세스를 관리하는 구성이었고, `cron status`에서 `Ticker heartbeat`가 최근 값으로 갱신되고 있었다.
 
 ```bash
-hermes -p <새-프로필> cron status
+hermes -p failmy_bot cron status
 ```
 
 `Gateway is running — cron jobs will fire automatically`와 `No active jobs`가 함께 나오면, 예약 작업 없이 순수 대화형 비서로만 시작된 상태다. 자동화가 필요해지면 7편의 절차대로 job을 하나씩 추가한다.
@@ -89,7 +89,7 @@ hermes -p <새-프로필> cron status
 
 1. 새 봇에 `/start` 또는 인사말을 보낸다.
 2. 1:1과(설정했다면) 그룹 챗 양쪽에서 응답이 오는지 확인한다.
-3. `hermes -p <새-프로필> gateway status --deep`로 세션이 새로 기록됐는지 확인한다.
+3. `hermes -p failmy_bot gateway status --deep`로 세션이 새로 기록됐는지 확인한다.
 4. 기존 비서 봇에 같은 메시지를 보내 두 비서가 서로 응답을 가로채지 않는지 확인한다.
 
 이 네 가지가 모두 통과하면, 두 비서는 모델·credential·Telegram 대상·게이트웨이 프로세스가 서로 독립된 상태로 운영되는 것이다.
