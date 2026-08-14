@@ -1,6 +1,6 @@
 ---
-title: 'Hermes Agent 실전 가이드 8: 프로필로 두 번째 Telegram 비서 운영하기'
-description: 상시 실행 홈서버에 기존 개인 비서와 분리된 두 번째 Telegram 비서를 새 프로필로 만들고, 그룹 챗과 모델 설정을 검증한다.
+title: 'Hermes Agent 실전 가이드 8: 부부를 위한 AI 비서 만들기'
+description: 상시 실행 홈서버에 부부가 함께 쓰는 Telegram AI 비서를 새 프로필로 만들고, 그룹 챗과 모델 설정을 검증한다.
 publishedAt: 2026-08-14
 updatedAt: 2026-08-14
 tags: [Hermes, Telegram, Profile]
@@ -12,23 +12,22 @@ editor: 한결
 editorReview: 2026-08-14-hermes-agent-second-telegram-profile
 ---
 
-Telegram 개인 비서를 이미 하나 운영 중이어도, 두 사람이 함께 쓰는 비서나 다른 목적의 비서는 같은 프로필에 얹지 않는 편이 낫다. **새 이름의 프로필을 만들면 모델, credential, skill, 게이트웨이, Telegram 봇이 기존 비서와 완전히 분리된 상태로 시작한다.**[1][5] 이 글은 상시 실행 홈서버에 실제로 이런 두 번째 비서를 구성하고 검증한 절차를 정리한다.
+혼자 쓰는 개인 비서를 이미 홈서버에 두고 있어도, **부부가 함께 쓰는 비서는 같은 프로필에 얹지 않는 편이 낫다.** 새 이름의 프로필을 만들면 모델, credential, skill, 게이트웨이, Telegram 봇이 기존 개인 비서와 완전히 분리된 상태로 시작한다.[1][5] 이 글은 상시 실행 홈서버에 실제로 부부용 비서를 구성하고, 이사 준비 조사에 써 본 절차를 정리한다.
 
-이 글의 명령과 설정 항목은 2026년 8월 14일 홈서버에서 실행 중인 Hermes Agent v0.20.1 인스턴스와 공식 문서·CLI help로 확인했다.[1][5][7] 실제 봇 사용자명, chat ID, token 값은 공개하지 않는다.
+이 글의 명령과 설정 항목은 2026년 8월 14일 홈서버에서 실행 중인 Hermes Agent v0.20.1 인스턴스와 공식 문서·CLI help로 확인했다.[1][5][7] 실제 봇 사용자명, chat ID, token 값과 조사 중이던 구체적인 금액·주소·일정은 공개하지 않는다.
 
 ## 핵심
 
 | 확인 항목 | 이번 구성 |
 | --- | --- |
-| 프로필 | 기존 default 비서와 이름이 다른 별도 프로필 |
+| 프로필 | 기존 개인 비서와 이름이 다른 별도 프로필 |
 | 모델 | openai-codex 계열, 기본 프로필과 다른 provider 조합도 가능 |
-| Telegram 봇 | 기존 비서와 다른 봇 token, 별도 allowed user/chat |
+| Telegram 봇 | 기존 비서와 다른 봇 token, 부부만 허용한 chat |
 | 대상 | 1:1 DM과 group chat 모두 허용하도록 `allowed_chats`·`group_allowed_chats` 설정 |
-| LocalMind 등 외부 MCP | 새 프로필에는 자동으로 연결되지 않음 — 필요하면 별도 등록 |
+| 실 사용 | 신혼희망타운 자격 확인, 대출 옵션 비교, 보증금 전환 계산 등 이사 준비 조사 |
 | Cron | 새 프로필도 빈 상태로 시작 — 필요한 작업만 별도로 만든다 |
-| Skill | 기본 프로필과 별개로 bundled skill이 다시 채워짐 |
 
-완료 기준은 “두 번째 봇이 응답한다”가 아니라, 프로필·모델·credential·게이트웨이·Telegram 대상이 기존 비서와 겹치지 않는다는 것을 각각 확인하는 것이다.
+완료 기준은 "부부용 봇이 응답한다"가 아니라, 프로필·모델·credential·게이트웨이·Telegram 대상이 기존 개인 비서와 겹치지 않는다는 것을 각각 확인하는 것이다.
 
 ## 1. 기존 비서와 분리되는지 먼저 확인한다
 
@@ -37,7 +36,7 @@ hermes profile list
 hermes gateway status --deep
 ```
 
-`profile list`에 기존 프로필과 새 프로필이 서로 다른 alias·gateway 상태로 나오는지 확인한다. 이 홈서버는 default 프로필이 기존 개인 비서를, 새 프로필이 이번 비서를 맡는 구조였다. 두 프로필 모두 `running` 상태였고 별도 PID로 떠 있었다.
+`profile list`에 기존 프로필과 새 프로필이 서로 다른 alias·gateway 상태로 나오는지 확인한다. 이 홈서버는 default 프로필이 기존 개인 비서를, 새 프로필이 부부용 비서를 맡는 구조였다. 두 프로필 모두 `running` 상태였고 별도 PID로 떠 있었다.
 
 ```bash
 hermes -p <새-프로필> profile show
@@ -76,13 +75,15 @@ hermes -p <새-프로필> cron status
 
 `Gateway is running — cron jobs will fire automatically`와 `No active jobs`가 함께 나오면, 예약 작업 없이 순수 대화형 비서로만 시작된 상태다. 자동화가 필요해지면 7편의 절차대로 job을 하나씩 추가한다.
 
-## 4. Skill 범위를 검토한다
+## 4. 실제로 부부가 함께 쓴 사례: 이사 준비 조사
 
-```bash
-hermes -p <새-프로필> skill list
-```
+부부용 비서를 만든 뒤 실제로 쓴 첫 사례는 이사 준비였다. 그룹 챗에 각자 알고 있는 조건을 올리면, 비서가 공고문과 대출 상품 페이지를 조사해서 자격 여부와 선택지를 정리해 줬다.
 
-새 프로필도 bundled skill 세트를 다시 채운 상태로 시작한다. 이 홈서버의 새 프로필에는 apple, autonomous-ai-agents, creative, devops, email, github, media, mlops, note-taking, productivity, research, smart-home, social-media, software-development 카테고리에 걸쳐 85개 skill이 있었다. 두 사람이 함께 쓰는 비서라면 시스템 명령 실행이나 배포처럼 민감한 skill을 실제로 쓸지 검토하고, 불필요하면 비활성화한다.
+1. **입주 자격 확인** — 신혼희망타운 행복주택 같은 공공주택 공고문을 찾아 읽고, 혼인 시점·자녀 유무 같은 부부의 조건을 대입해 신청 가능 여부를 판단했다.
+2. **대출 옵션 비교** — 신생아 특례 버팀목대출처럼 조건부로 유리한 대출 상품을 찾아, 실행 시점을 이사 일정과 맞추는 전략의 장단점을 정리했다.
+3. **보증금 전환 계산** — 현재 월세를 기준으로 보증금을 추가 납입했을 때 전환이율별 예상 월세를 표로 계산해 비교했다.
+
+세 단계 모두 부부 중 한 명이 그룹 챗에 질문을 던지면 비서가 웹 조사와 계산을 거쳐 결론과 근거를 함께 제시하는 흐름이었다. 구체적인 금액·주소·일정은 이 글에 옮기지 않는다.
 
 ## 5. 실제 대화로 마무리 확인한다
 
@@ -104,9 +105,9 @@ hermes -p <새-프로필> skill list
 
 ## 프라이버시
 
-Telegram 봇 사용자명, 실제 chat ID, token 값은 로그나 공개 문서에 그대로 남기지 않는다. 이 글의 예시 명령도 실제 식별자 대신 placeholder를 사용했다.
+Telegram 봇 사용자명, 실제 chat ID, token 값, 이사 준비 중 다룬 구체적인 금액·주소·일정은 로그나 공개 문서에 그대로 남기지 않는다. 이 글의 예시 명령도 실제 식별자 대신 placeholder를 사용했다.
 
-이로써 시리즈는 개인 비서 하나를 세우는 절차에서, 프로필을 새로 만들어 두 번째 목적의 비서를 독립적으로 운영하는 절차까지 이어진다.
+이로써 시리즈는 개인 비서 하나를 세우는 절차에서, 프로필을 새로 만들어 부부가 함께 쓰는 비서를 독립적으로 운영하는 절차까지 이어진다.
 
 ## Sources
 
