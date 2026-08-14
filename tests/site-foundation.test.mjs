@@ -245,8 +245,10 @@ test('실제 글과 실제 프로젝트만 콘텐츠 컬렉션에 남는다', ()
     'ai-memory-outside-model.md',
     'central-knowledge-local-execution.md',
     'decision-records.md',
+    'hermes-agent-chatgpt-telegram.md',
     'hermes-agent-macos-installation.md',
     'hermes-agent-overview.md',
+    'hermes-agent-windows-installation.md',
     'hermes-localmind-lifecycle.md',
     'how-i-finish-and-record-work.md',
     'how-i-use-sdd-5docs.md',
@@ -323,6 +325,30 @@ test('기억이 이어지는 개인 AI는 여섯 편이 독립된 질문과 공�
   assert.match(posts[3], /지식은 중앙에 두고 실행은 저장소가 있는 기기/);
   assert.match(posts[4], /원격 접근은 사용자가 허용한 범위/);
   assert.match(posts[5], /성공 문구가 아니라 파일, 테스트, 화면과 diff/);
+});
+
+test('Hermes Agent 실전 가이드는 설치와 연동을 네 편으로 분리한다', () => {
+  const filenames = [
+    'hermes-agent-overview.md',
+    'hermes-agent-macos-installation.md',
+    'hermes-agent-windows-installation.md',
+    'hermes-agent-chatgpt-telegram.md',
+  ];
+  const posts = filenames.map((filename) => read(`src/content/posts/${filename}`));
+
+  posts.forEach((post, index) => {
+    assert.match(post, /series: Hermes Agent 실전 가이드/);
+    assert.match(post, new RegExp(`seriesOrder: ${index + 1}`));
+    assert.match(post, /articleType: guide/);
+    assert.match(post, /editor: 한결/);
+    assert.match(post, /## 핵심\n/);
+  });
+
+  assert.match(posts[2], /실제 Windows 기기에서 실행 결과를 측정한 기록이 아니다/);
+  assert.match(posts[2], /Windows 10·11[\s\S]+Tier 1/);
+  assert.match(posts[3], /openai-codex/);
+  assert.match(posts[3], /OpenAI API \(direct\)/);
+  assert.match(posts[3], /Allowed user IDs를 빈 값으로 두면/);
 });
 
 test('블로그 본문 표는 모바일에서도 셀 경계와 열 너비를 구분한다', () => {
