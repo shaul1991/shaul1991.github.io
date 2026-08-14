@@ -251,6 +251,7 @@ test('실제 글과 실제 프로젝트만 콘텐츠 컬렉션에 남는다', ()
     'hermes-agent-memory-skills-sessions.md',
     'hermes-agent-overview.md',
     'hermes-agent-profiles-isolation.md',
+    'hermes-agent-second-telegram-profile.md',
     'hermes-agent-windows-installation.md',
     'hermes-localmind-lifecycle.md',
     'how-i-finish-and-record-work.md',
