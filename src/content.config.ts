@@ -10,6 +10,7 @@ const posts = defineCollection({
     updatedAt: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
+    articleType: z.enum(['brief', 'guide']).default('brief'),
     series: z.string().optional(),
     seriesOrder: z.number().int().positive().optional(),
     editor: z.literal('한결'),

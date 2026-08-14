@@ -222,7 +222,7 @@ const contextGroups = Astro.props.contextGroups ?? defaultContextGroups;
       position: fixed;
       z-index: 21;
       inset-block: 0;
-      display: flex;
+      display: none;
       width: 60vw;
       max-width: 60vw;
       flex-direction: column;
@@ -231,11 +231,10 @@ const contextGroups = Astro.props.contextGroups ?? defaultContextGroups;
       color: var(--color-ink);
       background: var(--color-surface-raised);
       box-shadow: var(--shadow-card);
-      transition: transform 220ms ease, visibility 220ms ease;
     }
-    .mobile-sidebar.left { left: 0; transform: translateX(-102%); }
-    .mobile-sidebar.right { right: 0; transform: translateX(102%); }
-    .mobile-sidebar[data-open] { visibility: visible; transform: translateX(0); }
+    .mobile-sidebar.left { left: 0; }
+    .mobile-sidebar.right { right: 0; }
+    .mobile-sidebar[data-open] { display: flex; visibility: visible; }
     .sidebar-heading { display: flex; align-items: start; justify-content: space-between; padding-bottom: var(--space-8); border-bottom: 1px solid var(--color-line); }
     .sidebar-heading > div { display: grid; gap: var(--space-1); }
     .sidebar-heading strong { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 400; }

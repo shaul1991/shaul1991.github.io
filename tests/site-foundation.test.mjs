@@ -182,6 +182,14 @@ test('모바일 사이드바는 화면의 60%만 사용하고 내부 스크롤�
   assert.doesNotMatch(header, /overflow-y: auto/);
 });
 
+test('닫힌 모바일 사이드바는 문서 전체의 가로 스크롤을 만들지 않는다', () => {
+  const header = read('src/components/Header.astro');
+
+  assert.match(header, /@media \(max-width: 48rem\)[\s\S]+\.mobile-sidebar \{[\s\S]+display: none;/);
+  assert.match(header, /\.mobile-sidebar\[data-open\] \{ display: flex; visibility: visible; \}/);
+  assert.doesNotMatch(header, /\.mobile-sidebar\.right \{[^}]+translateX/);
+});
+
 test('상단 헤더는 페이지를 내려도 화면 위에 고정된다', () => {
   const header = read('src/components/Header.astro');
 
@@ -237,6 +245,8 @@ test('실제 글과 실제 프로젝트만 콘텐츠 컬렉션에 남는다', ()
     'ai-memory-outside-model.md',
     'central-knowledge-local-execution.md',
     'decision-records.md',
+    'hermes-agent-macos-installation.md',
+    'hermes-agent-overview.md',
     'hermes-localmind-lifecycle.md',
     'how-i-finish-and-record-work.md',
     'how-i-use-sdd-5docs.md',
@@ -249,7 +259,7 @@ test('실제 글과 실제 프로젝트만 콘텐츠 컬렉션에 남는다', ()
   assert.equal(existsSync(new URL('../src/pages/blog/[...slug].astro', import.meta.url)), true);
 });
 
-test('모든 글은 핵심과 실행 기준을 짧게 제시한다', () => {
+test('모든 글은 핵심과 형식에 맞는 분량을 제공한다', () => {
   const filenames = readdirSync(new URL('../src/content/posts', import.meta.url)).filter((name) => /\.mdx?$/.test(name));
 
   filenames.forEach((filename) => {
@@ -263,12 +273,22 @@ test('모든 글은 핵심과 실행 기준을 짧게 제시한다', () => {
     const proseBlocks = body
       .split(/\n\s*\n/)
       .filter((block) => !/^(##|- |\d+\.|\||```|<)/.test(block.trim()));
+    const isGuide = /^articleType: guide$/m.test(content);
+    const maxVisibleTextLength = isGuide ? 7000 : 1000;
+    const maxProseBlocks = isGuide ? 50 : 8;
 
     assert.match(body, /## 핵심\n/);
     assert.match(body, /(^|\n)(?:- |\d+\. |\|)/m);
-    assert.ok(visibleTextLength <= 1000, `${filename}은 3~4분 안에 읽을 수 있어야 합니다: ${visibleTextLength}자`);
+    assert.ok(
+      visibleTextLength <= maxVisibleTextLength,
+      `${filename}은 ${isGuide ? '가이드' : '일반 글'} 분량 기준을 지켜야 합니다: ${visibleTextLength}자`,
+    );
     assert.ok(proseBlocks.length >= 2, `${filename}은 핵심을 해석할 설명 문단이 필요합니다`);
-    assert.ok(proseBlocks.length <= 8, `${filename}의 서술 문단이 너무 많습니다: ${proseBlocks.length}개`);
+    assert.ok(proseBlocks.length <= maxProseBlocks, `${filename}의 서술 문단이 너무 많습니다: ${proseBlocks.length}개`);
+    if (isGuide) {
+      assert.match(body, /## Sources\n/);
+      assert.ok((body.match(/^## /gm) ?? []).length >= 5, `${filename}은 다시 찾기 쉬운 단계 제목이 필요합니다`);
+    }
   });
 
   const article = read('src/pages/blog/[...slug].astro');
@@ -320,6 +340,13 @@ test('블로그 본문 표는 모바일에서도 셀 경계와 열 너비를 구
   assert.match(styles, /@media \(max-width: 38rem\)[\s\S]+padding: var\(--space-3\) var\(--space-2\)/);
   assert.match(catalog, /class="content-table-demo"/);
   assert.match(catalog, /본문 표/);
+});
+
+test('블로그 본문의 긴 링크와 inline code는 모바일 너비 안에서 줄바꿈된다', () => {
+  const article = read('src/pages/blog/[...slug].astro');
+
+  assert.match(article, /\.article-body :global\(a\), \.article-body :global\(code\) \{ overflow-wrap: anywhere; \}/);
+  assert.match(article, /\.article-body :global\(pre\) \{ overflow-x: auto;/);
 });
 
 test('첫 글은 LocalMind 기록에 근거한 작업 흐름과 의사결정 방식을 설명한다', () => {
